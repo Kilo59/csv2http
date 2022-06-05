@@ -1,15 +1,7 @@
-import pathlib
-
 import pytest
 
 from csv2http import parser
-
-CWD = pathlib.Path.cwd()
-TESTS_ROOT = pathlib.Path(__file__).parent
-DATA_DIR = TESTS_ROOT / "data"
-
-# relative path strings for all test CSV files
-TEST_CSVS = [str(path.relative_to(CWD)) for path in DATA_DIR.glob("*.csv")]
+from .constants import TEST_CSVS
 
 
 @pytest.mark.parametrize("filepath", TEST_CSVS)

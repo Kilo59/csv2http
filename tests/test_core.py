@@ -1,16 +1,7 @@
-import pathlib
-
 import httpx
 import pytest
 
-from csv2http import core, http, parser
-
-CWD = pathlib.Path.cwd()
-TESTS_ROOT = pathlib.Path(__file__).parent
-DATA_DIR = TESTS_ROOT / "data"
-
-# relative path strings for all test CSV files
-TEST_CSVS = [str(path.relative_to(CWD)) for path in DATA_DIR.glob("*.csv")]
+from csv2http import core, http
 
 
 def test_chunker_chunk_size():
@@ -28,12 +19,15 @@ def test_chunker_chunk_size():
     assert len(last_result) == len(input_iterator) - chunk_size
 
 
-@pytest.mark.parametrize("filepath", TEST_CSVS)
-def test_file_to_wire(http_reflect, filepath):
-    payload = next(parser.payload_generator(filepath))
+def test_file_to_wire(http_reflect, payload_generator_param_fxt):
+    payload = next(payload_generator_param_fxt)
 
     response = httpx.post("http://example.com/foobar", json=payload)
     print(http.response_details(response, verbose=True))
 
     assert http_reflect.calls.call_count == 1
     assert payload == response.json()
+
+
+if __name__ == "__main__":
+    pytest.main(["-vv"])
