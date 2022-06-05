@@ -4,11 +4,15 @@ import pytest
 
 from csv2http import parser
 
-TEST_ROOT = pathlib.Path(__file__, "..")
-DATA_DIR = TEST_ROOT / "data"
+CWD = pathlib.Path.cwd()
+TESTS_ROOT = pathlib.Path(__file__).parent
+DATA_DIR = TESTS_ROOT / "data"
+
+# relative path strings for all test CSV files
+TEST_CSVS = [str(path.relative_to(CWD)) for path in DATA_DIR.glob("*.csv")]
 
 
-@pytest.mark.parametrize("filepath", ["/data/simple.csv", "/data/simple1K.csv"])
+@pytest.mark.parametrize("filepath", TEST_CSVS)
 def test_payload_generator(filepath):
     index = 0
     for index, result in enumerate(parser.payload_generator(filepath), start=1):
@@ -32,4 +36,4 @@ def test_chunker_chunk_size():
 
 
 if __name__ == "__main__":
-    pytest.main(["--vv"])
+    pytest.main(["-vv"])
