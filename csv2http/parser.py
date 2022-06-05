@@ -10,6 +10,7 @@ Splits up data in smaller chunks/pages.
 TODO: support other input/file formats and generate form data payloads
 TODO: async file IO
 """
+import linecache
 import csv
 import logging
 import pathlib
@@ -20,10 +21,15 @@ from .constants import PAGE_SIZE_DEFAULT
 LOGGER = logging.getLogger(__file__)
 
 
-def payload_generator(fp: pathlib.Path) -> Generator[dict, None, None]:
-    yield {"foo": "bar"}
-    yield {"fizz": "buzz"}
-    yield {"thunder": "flash"}
+def payload_generator(
+    fp: pathlib.Path, delimiter: str = ",", **reader_kwargs
+) -> Generator[dict, None, None]:
+    with open(fp) as file_in:
+        for i, row_dict in enumerate(
+            csv.DictReader(file_in, delimiter=delimiter, **reader_kwargs)
+        ):
+            LOGGER.info(f"{i=} - {row_dict}")
+            yield row_dict
 
 
 def chunker(
@@ -40,3 +46,9 @@ def chunker(
 
     if chunk:  # yield the leftovers
         yield chunk
+
+
+def tokenize_line(filepath: str | pathlib.Path, split_on: str = ","):
+    filepath = pathlib.Path(filepath)
+    with open(filepath, mode="r") as file_in:
+        return file_in.readline().rstrip().split(split_on)

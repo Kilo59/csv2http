@@ -13,6 +13,14 @@ TEST_CSVS = [str(path.relative_to(CWD)) for path in DATA_DIR.glob("*.csv")]
 
 
 @pytest.mark.parametrize("filepath", TEST_CSVS)
+def test_tokenize_line(filepath):
+    result = parser.tokenize_line(filepath, split_on=",")
+    print(result)
+    assert len(result) > 1
+    assert open(filepath).readline().rstrip().split(",") == result
+
+
+@pytest.mark.parametrize("filepath", TEST_CSVS)
 def test_payload_generator(filepath):
     index = 0
     for index, result in enumerate(parser.payload_generator(filepath), start=1):
