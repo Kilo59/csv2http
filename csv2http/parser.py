@@ -15,9 +15,7 @@ import csv
 import linecache
 import logging
 import pathlib
-from typing import Generator, Iterable
-
-from .constants import PAGE_SIZE_DEFAULT
+from typing import Generator
 
 LOGGER = logging.getLogger(__file__)
 
@@ -31,22 +29,6 @@ def payload_generator(
         ):
             LOGGER.info(f"{i=} - {row_dict}")
             yield row_dict
-
-
-def chunker(
-    input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
-) -> Generator[list[dict], None, None]:
-    """Works through an iterator in chunks."""
-    chunk = []
-    for i, data in enumerate(input_iterator):
-        LOGGER.warning(f"{i=} {data=}")
-        chunk.append(data)
-        if len(chunk) == chunk_size:
-            yield chunk
-            chunk.clear()
-
-    if chunk:  # yield the leftovers
-        yield chunk
 
 
 def tokenize_line(filepath: str | pathlib.Path, line_num: int = 1, split_on: str = ","):
