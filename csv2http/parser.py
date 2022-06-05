@@ -8,6 +8,7 @@ Splits up data in smaller chunks/pages.
 
 
 TODO: support other input/file formats and generate form data payloads
+TODO: async file IO
 """
 import csv
 import logging
