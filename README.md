@@ -3,7 +3,8 @@
 ## Roadmap
 
 - [] As Library - Alpha
-  - [] parse csv as dictionary/json - Alpha
+  - [x] parse csv as dictionary/json - Alpha
+  - [x] accept mutator function - Alpha
   - [] HTTP POST request with json from csv - Alpha
   - [] limit concurrency - Alpha
   - [] non-blocking file IO - ???
