@@ -1,5 +1,5 @@
-import pathlib
 import csv
+import pathlib
 from typing import Generator
 
 
