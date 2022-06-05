@@ -9,9 +9,10 @@ Splits up data in smaller chunks/pages.
 
 TODO: support other input/file formats and generate form data payloads
 TODO: async file IO
+TODO: remove/update debugging logs
 """
-import linecache
 import csv
+import linecache
 import logging
 import pathlib
 from typing import Generator, Iterable
@@ -35,7 +36,7 @@ def payload_generator(
 def chunker(
     input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
 ) -> Generator[list[dict], None, None]:
-    """Takes"""
+    """Works through an iterator in chunks."""
     chunk = []
     for i, data in enumerate(input_iterator):
         LOGGER.warning(f"{i=} {data=}")
@@ -48,7 +49,7 @@ def chunker(
         yield chunk
 
 
-def tokenize_line(filepath: str | pathlib.Path, split_on: str = ","):
-    filepath = pathlib.Path(filepath)
-    with open(filepath, mode="r") as file_in:
-        return file_in.readline().rstrip().split(split_on)
+def tokenize_line(filepath: str | pathlib.Path, line_num: int = 1, split_on: str = ","):
+    if isinstance(filepath, pathlib.Path):
+        filepath = str(filepath)
+    return linecache.getline(filepath, line_num).rstrip().split(split_on)

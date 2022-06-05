@@ -14,7 +14,7 @@ TEST_CSVS = [str(path.relative_to(CWD)) for path in DATA_DIR.glob("*.csv")]
 
 @pytest.mark.parametrize("filepath", TEST_CSVS)
 def test_tokenize_line(filepath):
-    result = parser.tokenize_line(filepath, split_on=",")
+    result = parser.tokenize_line(filepath, line_num=1, split_on=",")
     print(result)
     assert len(result) > 1
     assert open(filepath).readline().rstrip().split(",") == result
