@@ -5,6 +5,17 @@ import httpx
 import pytest
 import respx
 
+from csv2http import parser
+
+from .constants import TEST_CSVS
+
+
+@pytest.fixture(scope="module", params=TEST_CSVS)
+def payload_generator_param_fxt(request):
+    """Parametrized fixture of payload_generators, one per CSV in tests/data."""
+    payload_gen = parser.payload_generator(request.param)
+    yield payload_gen
+
 
 def _reflect_request(request: httpx.Request):
     reflect_headers = {"content-type", "content-length"}
