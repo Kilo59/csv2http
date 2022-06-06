@@ -16,9 +16,7 @@ def chunker(
 ) -> Generator[list[dict], None, None]:
     """Works through an iterator and returns batches based on `chunk_size`."""
     chunk = []
-    for i, data in enumerate(input_iterator):
-
-        LOGGER.debug(f"{i=} {data=}")
+    for data in input_iterator:
         chunk.append(data)
 
         if len(chunk) == chunk_size:
