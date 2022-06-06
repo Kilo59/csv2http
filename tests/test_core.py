@@ -52,7 +52,13 @@ async def test_parrelelize_requests(http_reflect, csv_payload_generator_param_fx
 async def test_main(http_reflect_random_status, sample_csv):
 
     total = await core.main(
-        cli.Args(sample_csv, "http://example.com", concurrency=50, verb="PATCH")
+        cli.Args(
+            sample_csv,
+            "http://example.com",
+            concurrency=50,
+            method="PATCH",
+            # verbose=True,
+        )
     )
 
     assert http_reflect_random_status.calls.call_count == total

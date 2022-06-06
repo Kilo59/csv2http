@@ -13,7 +13,8 @@ class Args(NamedTuple):
     file: pathlib.Path
     url: URL | str
     concurrency: int
-    verb: Literal["POST", "PATCH", "PUT"]
+    method: Literal["POST", "PATCH", "PUT"]
+    # verbose: bool = True
 
 
 def get_args() -> Args:
@@ -30,14 +31,23 @@ def get_args() -> Args:
         type=int,
     )
     parser.add_argument(
-        "--verb",
-        help="HTTP verb (default: POST)",
+        "--method",
+        help="HTTP method/verb (default: POST)",
         default="POST",
         choices=SUPPORTED_METHODS,
     )
+    # parser.add_argument(
+    #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
+    # )
 
     args = parser.parse_args()
-    return Args(args.file, args.url, args.concurrency, args.verb)
+    return Args(
+        args.file,
+        args.url,
+        args.concurrency,
+        args.method,
+        # args.verbose,
+    )
 
 
 if __name__ == "__main__":
