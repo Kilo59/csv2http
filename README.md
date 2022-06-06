@@ -1,5 +1,7 @@
 # csv2http
 
+[![ci](https://github.com/Kilo59/csv2http/workflows/ci/badge.svg)](https://github.com/Kilo59/csv2http/actions)
+
 ## Quick start
 
 Install
