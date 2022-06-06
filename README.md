@@ -22,18 +22,19 @@ csv2http my_file.csv mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178
 
 ## Roadmap
 
-- [ ] As Library - Alpha
+- [x] As Library - Alpha
   - [x] parse csv as dictionary/json - Alpha
   - [x] accept mutator function - Alpha
   - [x] HTTP POST request with json from csv - Alpha
   - [x] limit concurrency - Alpha
   - [ ] non-blocking file IO - ???
   - [ ] hooks for recording response results - Beta
+  - [ ] mkdoc docs - Beta
 - [x] As CLI - Beta
   - [x] argparse - Alpha
   - [ ] progress bar - ???
   - [ ] use dedicated CLI library (typer, rich etc.) - Beta
-- [ ] GH Actions CI (lint, test, etc.)
+- [x] GH Actions CI (lint, test, etc.)
 - [ ] GH Actions CD (publish to pypi)
 
 ## Example
