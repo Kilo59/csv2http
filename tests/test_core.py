@@ -51,7 +51,7 @@ async def test_parrelelize_requests(http_reflect, csv_payload_generator_param_fx
 @pytest.mark.asyncio
 async def test_main(http_reflect_random_status, sample_csv):
 
-    total = await core.main(
+    total = await core.execute(
         cli.Args(
             sample_csv,
             "http://example.com",
@@ -62,7 +62,6 @@ async def test_main(http_reflect_random_status, sample_csv):
     )
 
     assert http_reflect_random_status.calls.call_count == total
-    assert False
 
 
 if __name__ == "__main__":

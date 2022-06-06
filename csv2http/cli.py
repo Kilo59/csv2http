@@ -26,7 +26,7 @@ def get_args() -> Args:
     parser.add_argument(
         "-c",
         "--concurrency",
-        help=f"Maxinum number of concurrent requests (default: {CONCURRENCY_DEFAULT})",
+        help=f"Maximum number of concurrent requests (default: {CONCURRENCY_DEFAULT})",
         default=CONCURRENCY_DEFAULT,
         type=int,
     )

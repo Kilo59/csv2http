@@ -73,7 +73,7 @@ async def parrelelize_requests(
     return responses
 
 
-async def main(args: cli.Args) -> int:
+async def execute(args: cli.Args) -> int:
     """Make http requests given a CSV file and user arguments."""
     file_input = pathlib.Path(args.file)
     assert file_input.exists(), f"could not find {file_input.absolute()}"
@@ -98,6 +98,10 @@ async def main(args: cli.Args) -> int:
     return total_requests
 
 
-if __name__ == "__main__":
+def main():
     user_args = cli.get_args()
-    asyncio.run(main(user_args))
+    asyncio.run(execute(user_args))
+
+
+if __name__ == "__main__":
+    main()
