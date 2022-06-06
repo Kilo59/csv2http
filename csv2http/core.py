@@ -1,3 +1,7 @@
+"""
+core.py
+~~~~~~~
+"""
 import asyncio
 import logging
 import pathlib
@@ -70,6 +74,7 @@ async def parrelelize_requests(
 
 
 async def main(args: cli.Args) -> int:
+    """Make http requests given a CSV file and user arguments."""
     file_input = pathlib.Path(args.file)
     assert file_input.exists(), f"could not find {file_input.absolute()}"
 
@@ -94,5 +99,5 @@ async def main(args: cli.Args) -> int:
 
 
 if __name__ == "__main__":
-    args = cli.get_args()
-    asyncio.run(main(args))
+    user_args = cli.get_args()
+    asyncio.run(main(user_args))
