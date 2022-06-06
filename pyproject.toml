@@ -48,6 +48,7 @@ asyncio_mode = "auto"
 [tool.isort]
 known_first_party = "csv2http"
 profile = "black"
+skip_gitignore = true
 
 [tool.pylint.main]
 # Analyse import fallback blocks. This can be used to support both Python 2 and 3
