@@ -35,7 +35,7 @@ class Args(NamedTuple):
 def get_args() -> Args:
     """Get user args from the command line."""
     parser = argparse.ArgumentParser(
-        description="HTTP request for every row of a CSV file"
+        description="HTTP request for every row of a CSV file - v0.0.0a"
     )
     parser.add_argument("file", help="payload csv file", type=pathlib.Path)
     parser.add_argument(
