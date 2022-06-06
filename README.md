@@ -4,6 +4,8 @@
 [![pypi version](https://img.shields.io/pypi/v/csv2http.svg)](https://pypi.org/project/csv2http/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
+CLI tool and library for making a series of HTTP requests based on a CSV file input.
+
 ## Quick start
 
 Install
@@ -75,5 +77,6 @@ https://mockbin.org/bin/9e95289e-d048-4515-9a61-07f2c74810f5/log
   - [ ] Nested fields - V1
 - [ ] Complete Docs - V1
   - [ ] `create_mockbin.csv` and `example.csv` to use in quickstart - Beta
+  - [ ] examples for using as library
 - [x] GH Actions CI (lint, test, etc.)
 - [ ] GH Actions CD (publish to pypi)
