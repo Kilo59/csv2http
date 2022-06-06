@@ -19,8 +19,8 @@ def test_chunker_chunk_size():
     assert len(last_result) == len(input_iterator) - chunk_size
 
 
-def test_file_to_wire(http_reflect, payload_generator_param_fxt):
-    payload = next(payload_generator_param_fxt)
+def test_file_to_wire(http_reflect, csv_payload_generator_param_fxt):
+    payload = next(csv_payload_generator_param_fxt)
 
     response = httpx.post("http://example.com/foobar", json=payload)
     print(core.response_details(response, verbose=True))
@@ -30,10 +30,10 @@ def test_file_to_wire(http_reflect, payload_generator_param_fxt):
 
 
 @pytest.mark.asyncio
-async def test_parrelelize_requests(http_reflect, payload_generator_param_fxt):
-    payload_1 = next(payload_generator_param_fxt)
-    payload_2 = next(payload_generator_param_fxt)
-    payload_3 = next(payload_generator_param_fxt)
+async def test_parrelelize_requests(http_reflect, csv_payload_generator_param_fxt):
+    payload_1 = next(csv_payload_generator_param_fxt)
+    payload_2 = next(csv_payload_generator_param_fxt)
+    payload_3 = next(csv_payload_generator_param_fxt)
     payloads = [payload_1, payload_2, payload_3]
 
     async with httpx.AsyncClient() as client:

@@ -1,10 +1,12 @@
 import asyncio
 import logging
-from typing import Generator, Iterable, Literal
+import pathlib
+from typing import Callable, Generator, Iterable, Literal, Optional
 
 import httpx
 
-from .constants import PAGE_SIZE_DEFAULT
+from csv2http import cli, parser
+from csv2http.constants import PAGE_SIZE_DEFAULT
 
 LOGGER = logging.getLogger(__file__)
 
@@ -12,10 +14,10 @@ LOGGER = logging.getLogger(__file__)
 def chunker(
     input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
 ) -> Generator[list[dict], None, None]:
-    """Works through an iterator in chunks."""
+    """Works through an iterator in batches."""
     chunk = []
     for i, data in enumerate(input_iterator):
-        LOGGER.warning(f"{i=} {data=}")
+        LOGGER.debug(f"{i=} {data=}")
         chunk.append(data)
         if len(chunk) == chunk_size:
             yield chunk
@@ -52,7 +54,31 @@ async def parrelelize_requests(
     for request_kwargs in request_kwarg_list:
         tasks.append(client_session.request(method, path, **request_kwargs))
 
-    LOGGER.info(f"parrelelizing {len(request_kwarg_list)} requests")
+    LOGGER.info(f"{method} {path} - parrelelizing {len(request_kwarg_list)} requests")
 
     responses = await asyncio.gather(*tasks, return_exceptions=True)
     return responses
+
+
+async def main():
+    args = cli.get_args()
+
+    file_input = pathlib.Path(args.file)
+    assert file_input.exists(), f"could not find {file_input.absolute()}"
+
+    async with httpx.AsyncClient() as client_session:
+
+        for paylod_batch in chunker(
+            parser.csv_payload_generator(file_input), chunk_size=args.concurrency
+        ):
+
+            await parrelelize_requests(
+                args.verb,
+                args.url,
+                [{"json": p} for p in paylod_batch],
+                client_session,
+            )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

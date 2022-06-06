@@ -20,17 +20,22 @@ from typing import Callable, Generator, Optional
 LOGGER = logging.getLogger(__file__)
 
 
-def payload_generator(
+def csv_payload_generator(
     fp: pathlib.Path,
     delimiter: str = ",",
     mutator: Optional[Callable[[dict], dict]] = None,
     **reader_kwargs,
 ) -> Generator[dict, None, None]:
+    """
+    Yields rows from a CSV as dictionaries.
+    Optionaly mutate the row first by providing a `Callable` (function).
+    """
+
     with open(fp) as file_in:
         for i, row_dict in enumerate(
             csv.DictReader(file_in, delimiter=delimiter, **reader_kwargs)
         ):
-            LOGGER.info(f"{i=} - {row_dict}")
+            LOGGER.debug(f"{i=} - {row_dict}")
             if mutator:
                 row_dict = mutator(row_dict)
             yield row_dict
