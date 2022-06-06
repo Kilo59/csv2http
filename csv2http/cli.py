@@ -9,6 +9,14 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
 
 
+def validate_url(value: str | URL) -> URL:
+    url = URL(value)
+    if not url.scheme:
+        base = URL(f"http://{url.path}")
+        url = base.join(url)
+    return url
+
+
 class Args(NamedTuple):
     file: pathlib.Path
     url: URL | str
@@ -22,7 +30,11 @@ def get_args() -> Args:
         description="HTTP request for every row of a CSV file"
     )
     parser.add_argument("file", help="payload csv file", type=pathlib.Path)
-    parser.add_argument("url", help="URL destination", type=URL)
+    parser.add_argument(
+        "url",
+        help="URL destination - called with `http` if scheme is absent",
+        type=validate_url,
+    )
     parser.add_argument(
         "-c",
         "--concurrency",
