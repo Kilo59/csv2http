@@ -11,7 +11,7 @@ license = "MIT License"
 readme = "README.md"
 repository = "https://github.com/kilo59/csv2http"
 homepage = "https://github.com/kilo59/csv2http"
-keywords = ["http", "csv", "cli"]
+keywords = ["http", "csv", "cli", "remediation"]
 
 [tool.poetry.scripts]
 csv2http = "csv2http.core:main"
