@@ -20,7 +20,7 @@ HTTP request for every row of a CSV file
 
 positional arguments:
   file                  payload csv file
-  url                   URL destination
+  url                   URL destination - called with `http` if scheme is absent
 
 options:
   -h, --help            show this help message and exit
@@ -30,9 +30,19 @@ options:
                         HTTP method/verb (default: POST)
 ```
 
+Make POST calls to http://mockbin.org from a local csv file.
+
 ```
-csv2http my_file.csv mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178 --concurrency 3
+❯ csv2http my_file.csv mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178 --concurrency 3
+ POST http://mockbin.org/bin/mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178
+  status codes - {200: 3}
+  status codes - {200: 3}
+  status codes - {200: 3}
+  status codes - {200: 1}
 ```
+
+Check the bin log
+https://mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178/log
 
 ## Roadmap
 
@@ -50,9 +60,3 @@ csv2http my_file.csv mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178 --conc
   - [ ] use dedicated CLI library (typer, rich etc.) - Beta
 - [x] GH Actions CI (lint, test, etc.)
 - [ ] GH Actions CD (publish to pypi)
-
-## Example
-
-```
-python csv2http/core.py /Users/gabriel/dev/csv2http/tests/data/simple.csv http://mockbin.org/bin/a88f6cf9-e88b-487f-ae98-598807232178
-```

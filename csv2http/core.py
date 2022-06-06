@@ -82,6 +82,8 @@ async def execute(args: cli.Args) -> int:
 
     async with httpx.AsyncClient() as client_session:
 
+        print(f" {args.method} {args.url}")
+
         for paylod_batch in chunker(
             parser.csv_payload_generator(file_input), chunk_size=args.concurrency
         ):
@@ -93,7 +95,7 @@ async def execute(args: cli.Args) -> int:
                 client_session,
             )
             total_requests += len(responses)
-            print(summarize_responses(responses))
+            print(f"  {summarize_responses(responses)}")
 
     return total_requests
 
