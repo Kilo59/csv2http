@@ -1,7 +1,7 @@
 import invoke
 
 
-@invoke.task()
+@invoke.task
 def sort(ctx, path="."):
     """Sort module imports."""
     print("  sorting imports ...")

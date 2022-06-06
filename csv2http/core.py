@@ -14,11 +14,13 @@ LOGGER = logging.getLogger(__file__)
 def chunker(
     input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
 ) -> Generator[list[dict], None, None]:
-    """Works through an iterator in batches."""
+    """Works through an iterator and returns batches based on `chunk_size`."""
     chunk = []
     for i, data in enumerate(input_iterator):
+
         LOGGER.debug(f"{i=} {data=}")
         chunk.append(data)
+
         if len(chunk) == chunk_size:
             yield chunk
             chunk.clear()
@@ -54,7 +56,7 @@ async def parrelelize_requests(
     for request_kwargs in request_kwarg_list:
         tasks.append(client_session.request(method, path, **request_kwargs))
 
-    LOGGER.info(f"{method} {path} - parrelelizing {len(request_kwarg_list)} requests")
+    LOGGER.debug(f"{method} {path} - parrelelizing {len(request_kwarg_list)} requests")
 
     responses = await asyncio.gather(*tasks, return_exceptions=True)
     return responses
