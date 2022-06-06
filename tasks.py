@@ -15,3 +15,8 @@ def fmt(ctx, path=".", sort_=True):
     ctx.run(f"black {path}")
     if sort_:
         sort(ctx, path)
+
+
+@invoke.task
+def lint(ctx, path="csv2http"):
+    ctx.run(f"pylint {path}")

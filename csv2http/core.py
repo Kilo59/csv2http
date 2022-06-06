@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import pathlib
-from typing import Callable, Generator, Iterable, Literal, Optional
+from typing import Generator, Iterable, Literal
 
 import httpx
 
