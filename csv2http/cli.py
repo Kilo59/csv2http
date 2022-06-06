@@ -1,3 +1,7 @@
+"""
+cli.py
+~~~~~~
+"""
 import argparse
 import pathlib
 from typing import Literal, NamedTuple
@@ -10,6 +14,7 @@ CONCURRENCY_DEFAULT = 25
 
 
 def validate_url(value: str | URL) -> URL:
+    """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
         base = URL(f"http://{url.path}")
@@ -18,6 +23,8 @@ def validate_url(value: str | URL) -> URL:
 
 
 class Args(NamedTuple):
+    """Expected user Args."""
+
     file: pathlib.Path
     url: URL | str
     concurrency: int
@@ -26,6 +33,7 @@ class Args(NamedTuple):
 
 
 def get_args() -> Args:
+    """Get user args from the command line."""
     parser = argparse.ArgumentParser(
         description="HTTP request for every row of a CSV file"
     )
