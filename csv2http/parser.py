@@ -21,7 +21,7 @@ LOGGER = logging.getLogger(__file__)
 
 
 def csv_payload_generator(
-    fp: pathlib.Path,
+    filepath: pathlib.Path,
     delimiter: str = ",",
     mutator: Optional[Callable[[dict], dict]] = None,
     **reader_kwargs,
@@ -31,7 +31,7 @@ def csv_payload_generator(
     Optionaly mutate the row first by providing a `Callable` (function).
     """
 
-    with open(fp) as file_in:
+    with open(filepath, encoding="utf-8") as file_in:
         for i, row_dict in enumerate(
             csv.DictReader(file_in, delimiter=delimiter, **reader_kwargs)
         ):
@@ -42,6 +42,7 @@ def csv_payload_generator(
 
 
 def tokenize_line(filepath: str | pathlib.Path, line_num: int = 1, split_on: str = ","):
+    """Split strings on a given line number."""
     if isinstance(filepath, pathlib.Path):
         filepath = str(filepath)
     return linecache.getline(filepath, line_num).rstrip().split(split_on)
