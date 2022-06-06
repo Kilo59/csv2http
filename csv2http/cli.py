@@ -6,7 +6,7 @@ from httpx import URL
 
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 
-CONCURRENCY_DEFAULT = 5
+CONCURRENCY_DEFAULT = 25
 
 
 class Args(NamedTuple):
