@@ -66,9 +66,10 @@ async def parrelelize_requests(
 ) -> list[httpx.Response]:
     """Parreleize multiple HTTP requests with asyncio.gather."""
 
-    tasks = []
-    for request_kwargs in request_kwarg_list:
-        tasks.append(client_session.request(method, path, **request_kwargs))
+    tasks = [
+        client_session.request(method, path, **request_kwargs)
+        for request_kwargs in request_kwarg_list
+    ]
 
     LOGGER.debug(f"{method} {path} - parrelelizing {len(request_kwarg_list)} requests")
 
