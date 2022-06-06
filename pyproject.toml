@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "csv2http"
-version = "0.0.1a"
+version = "0.0.0a"
 description = "Make http requests based on a CSV input file"
 authors = ["Gabriel Gore <gabriel59kg@gmail.com>"]
 license = "MIT License"
@@ -12,6 +12,14 @@ readme = "README.md"
 repository = "https://github.com/kilo59/csv2http"
 homepage = "https://github.com/kilo59/csv2http"
 keywords = ["http", "csv", "cli", "remediation"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+]
 
 [tool.poetry.scripts]
 csv2http = "csv2http.core:main"
