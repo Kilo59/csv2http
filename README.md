@@ -38,6 +38,8 @@ options:
 
 Make POST calls to http://mockbin.org from a local csv file.
 
+---
+
 First setup a new `bin`, using [httpie](https://httpie.io/cli), curl or the [web ui](http://mockbin.com/bin/create) and get a bin id.
 
 ```
