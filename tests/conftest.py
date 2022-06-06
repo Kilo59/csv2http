@@ -12,6 +12,8 @@ from csv2http import parser
 
 from .constants import TEST_CSVS
 
+# pylint: disable=fixme
+
 
 @pytest.fixture(scope="module", params=TEST_CSVS)
 def csv_payload_generator_param_fxt(request):

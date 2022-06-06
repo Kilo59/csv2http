@@ -14,6 +14,8 @@ from csv2http.constants import PAGE_SIZE_DEFAULT
 
 LOGGER = logging.getLogger(__file__)
 
+# pylint: disable=fixme
+
 
 def chunker(
     input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
@@ -62,6 +64,7 @@ async def parrelelize_requests(
     request_kwarg_list: list[dict],
     client_session: httpx.AsyncClient,
 ) -> list[httpx.Response]:
+    """Parreleize multiple HTTP requests with asyncio.gather."""
 
     tasks = []
     for request_kwargs in request_kwarg_list:
@@ -101,6 +104,7 @@ async def execute(args: cli.Args) -> int:
 
 
 def main():
+    """csv2http script entrypoint."""
     user_args = cli.get_args()
     asyncio.run(execute(user_args))
 
