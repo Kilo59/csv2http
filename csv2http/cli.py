@@ -4,7 +4,7 @@ cli.py
 """
 import argparse
 import pathlib
-from typing import Literal, NamedTuple
+from typing import Literal, NamedTuple, Union
 
 from httpx import URL
 
@@ -26,7 +26,7 @@ class Args(NamedTuple):
     """Expected user Args."""
 
     file: pathlib.Path
-    url: URL | str
+    url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
     # verbose: bool = True

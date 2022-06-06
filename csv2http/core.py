@@ -5,7 +5,7 @@ core.py
 import asyncio
 import logging
 import pathlib
-from typing import Counter, Generator, Iterable, Literal
+from typing import Counter, Generator, Iterable, Literal, Union
 
 import httpx
 
@@ -60,7 +60,7 @@ Methods = Literal["POST", "PUT", "PATCH"]
 
 async def parrelelize_requests(
     method: Methods,
-    path: str | httpx.URL,
+    path: Union[str, httpx.URL],
     request_kwarg_list: list[dict],
     client_session: httpx.AsyncClient,
 ) -> list[httpx.Response]:
