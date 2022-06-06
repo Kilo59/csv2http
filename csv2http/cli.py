@@ -4,7 +4,7 @@ cli.py
 """
 import argparse
 import pathlib
-from typing import Literal, NamedTuple
+from typing import Literal, NamedTuple, Union
 
 from httpx import URL
 
@@ -13,7 +13,7 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
 
 
-def validate_url(value: str | URL) -> URL:
+def validate_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
@@ -26,7 +26,7 @@ class Args(NamedTuple):
     """Expected user Args."""
 
     file: pathlib.Path
-    url: URL | str
+    url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
     # verbose: bool = True

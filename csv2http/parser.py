@@ -15,7 +15,7 @@ import csv
 import linecache
 import logging
 import pathlib
-from typing import Callable, Generator, Optional
+from typing import Callable, Generator, Optional, Union
 
 LOGGER = logging.getLogger(__file__)
 
@@ -41,7 +41,9 @@ def csv_payload_generator(
             yield row_dict
 
 
-def tokenize_line(filepath: str | pathlib.Path, line_num: int = 1, split_on: str = ","):
+def tokenize_line(
+    filepath: Union[str, pathlib.Path], line_num: int = 1, split_on: str = ","
+):
     """Split strings on a given line number."""
     if isinstance(filepath, pathlib.Path):
         filepath = str(filepath)
