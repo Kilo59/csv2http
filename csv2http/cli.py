@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from typing import Literal, NamedTuple
 
 from httpx import URL
 
@@ -8,7 +9,14 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 5
 
 
-def get_args():
+class Args(NamedTuple):
+    file: pathlib.Path
+    url: URL | str
+    concurrency: int
+    verb: Literal["POST", "PATCH", "PUT"]
+
+
+def get_args() -> Args:
     parser = argparse.ArgumentParser(
         description="HTTP request for every row of a CSV file"
     )
@@ -29,7 +37,7 @@ def get_args():
     )
 
     args = parser.parse_args()
-    return args
+    return Args(args.file, args.url, args.concurrency, args.verb)
 
 
 if __name__ == "__main__":

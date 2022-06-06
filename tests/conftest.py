@@ -25,7 +25,7 @@ def _reflect_request(request: httpx.Request):
 
 @pytest.fixture
 def http_reflect():
-    """Return all outgoing http request's payload as a response."""
+    """Return all outgoing http POST | PUT | PATCH request's payload as a response."""
     # TODO: make http_reflect_airgap
     with respx.mock(assert_all_called=False, assert_all_mocked=True) as respx_mock:
 

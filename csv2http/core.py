@@ -47,7 +47,7 @@ Methods = Literal["POST", "PUT", "PATCH"]
 
 async def parrelelize_requests(
     method: Methods,
-    path: str,
+    path: str | httpx.URL,
     request_kwarg_list: list[dict],
     client_session: httpx.AsyncClient,
 ) -> list[httpx.Response]:
@@ -62,9 +62,7 @@ async def parrelelize_requests(
     return responses
 
 
-async def main():
-    args = cli.get_args()
-
+async def main(args: cli.Args) -> int:
     file_input = pathlib.Path(args.file)
     assert file_input.exists(), f"could not find {file_input.absolute()}"
 
@@ -83,4 +81,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    args = cli.get_args()
+    asyncio.run(main(args))
