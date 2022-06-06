@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import pathlib
-from typing import Generator, Iterable, Literal
+from typing import Counter, Generator, Iterable, Literal
 
 import httpx
 
@@ -41,6 +41,11 @@ def response_details(response: httpx.Response, verbose: bool = False) -> str:
     return result
 
 
+def summarize_responses(responses: list[httpx.Response]) -> str:
+    counter = Counter([r.status_code for r in responses])
+    return f"status codes - {counter}"
+
+
 # supported http methods
 Methods = Literal["POST", "PUT", "PATCH"]
 
@@ -66,18 +71,23 @@ async def main(args: cli.Args) -> int:
     file_input = pathlib.Path(args.file)
     assert file_input.exists(), f"could not find {file_input.absolute()}"
 
+    total_requests = 0
+
     async with httpx.AsyncClient() as client_session:
 
         for paylod_batch in chunker(
             parser.csv_payload_generator(file_input), chunk_size=args.concurrency
         ):
 
-            await parrelelize_requests(
+            responses = await parrelelize_requests(
                 args.verb,
                 args.url,
                 [{"json": p} for p in paylod_batch],
                 client_session,
             )
+            total_requests += len(responses)
+            print(summarize_responses(responses))
+    return total_requests
 
 
 if __name__ == "__main__":

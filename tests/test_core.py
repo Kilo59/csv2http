@@ -1,7 +1,7 @@
 import httpx
 import pytest
 
-from csv2http import core
+from csv2http import cli, core
 
 
 def test_chunker_chunk_size():
@@ -46,6 +46,17 @@ async def test_parrelelize_requests(http_reflect, csv_payload_generator_param_fx
 
     for payload, response in zip(payloads, responses):
         assert payload == response.json()
+
+
+@pytest.mark.asyncio
+async def test_main(http_reflect_random_status, sample_csv):
+
+    total = await core.main(
+        cli.Args(sample_csv, "http://example.com", concurrency=50, verb="PATCH")
+    )
+
+    assert http_reflect_random_status.calls.call_count == total
+    assert False
 
 
 if __name__ == "__main__":
