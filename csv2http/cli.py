@@ -13,7 +13,7 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
 
 
-def validate_url(value: str | URL) -> URL:
+def validate_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
