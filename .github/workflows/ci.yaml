@@ -91,4 +91,4 @@ jobs:
       run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
 
     - name: Run the test suite
-      run: poetry run pytest -v
+      run: poetry run pytest --cov=csv2http -v
