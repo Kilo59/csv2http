@@ -6,6 +6,7 @@ dist/
 *.egg-info/
 build/
 .coverage*
+coverage.xml
 pip-wheel-metadata/
 .pytest_cache/
 .mypy_cache/
