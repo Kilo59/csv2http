@@ -45,6 +45,7 @@ pytest-cov = "^3.0.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+addopts = "--cov=csv2http --cov-report term"
 
 [tool.isort]
 known_first_party = "csv2http"
