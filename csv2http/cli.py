@@ -13,7 +13,7 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
 
 
-def validate_url(value: Union[str, URL]) -> URL:
+def _normalize_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
@@ -41,7 +41,7 @@ def get_args() -> Args:
     parser.add_argument(
         "url",
         help="URL destination - called with `http` if scheme is absent",
-        type=validate_url,
+        type=_normalize_url,
     )
     parser.add_argument(
         "-c",
