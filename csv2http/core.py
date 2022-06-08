@@ -61,10 +61,30 @@ Methods = Literal["POST", "PUT", "PATCH"]
 async def parrelelize_requests(
     method: Methods,
     path: Union[str, httpx.URL],
+    # TODO: create type for request_kwargs
     request_kwarg_list: list[dict],
     client_session: httpx.AsyncClient,
 ) -> list[httpx.Response]:
-    """Parreleize multiple HTTP requests with asyncio.gather."""
+    """
+    Parreleize multiple HTTP requests with asyncio.gather.
+
+    Parameters
+    ----------
+    method
+        HTTP verb to use POST, PUT, PATCH.
+    path
+        Absolute or relative URL path.
+    request_kwarg_list
+        List of keyword arguments to pass to `httpx.request()`. Each object becomes an
+        independent request and async task.
+    client_session
+        Active AsyncClient instance session.
+
+    Returns
+    -------
+    list[httpx.Response]
+        List of HTTP response objects.
+    """
 
     tasks = [
         client_session.request(method, path, **request_kwargs)
