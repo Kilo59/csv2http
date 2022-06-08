@@ -5,12 +5,13 @@ core.py
 import asyncio
 import logging
 import pathlib
-from typing import Counter, Generator, Iterable, Literal, Union
+from typing import Generator, Iterable, Literal, Union
 
 import httpx
 
 from csv2http import cli, parser
 from csv2http.constants import PAGE_SIZE_DEFAULT
+from csv2http.utils import summarize_responses
 
 LOGGER = logging.getLogger(__file__)
 
@@ -31,27 +32,6 @@ def chunker(
 
     if chunk:  # yield the leftovers
         yield chunk
-
-
-def response_details(response: httpx.Response, verbose: bool = False) -> str:
-    """Returns a string details of the response and the original request."""
-    # TODO: prettyprint json
-    result = f"{response.request.method} {response.request.url} -> {response}"
-    if verbose:
-        result += (
-            f"\n  headers - {dict(response.headers)}"
-            + f"\n  content - {response.content.decode()}"
-        )
-    return result
-
-
-def summarize_responses(responses: list[httpx.Response]) -> str:
-    """Returns count of all response status codes sorted by status code"""
-    # TODO: make this pretty, display as table with running tally of previous responses
-    counter = Counter([r.status_code for r in responses])
-    # TODO: maybe don't bother sorting this
-    sorted_dict = dict(sorted(counter.items(), key=lambda item: item[0]))
-    return f"status codes - {sorted_dict}"
 
 
 # supported http methods
