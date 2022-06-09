@@ -109,7 +109,8 @@ async def execute(args: cli.Args) -> int:
             )
             total_requests += len(responses)
             print(f"  {summarize_responses(responses)}")
-            append_responses(log_file, responses)
+            if args.save_log:
+                append_responses(log_file, responses)
 
     return total_requests
 

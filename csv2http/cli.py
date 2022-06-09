@@ -32,6 +32,7 @@ class Args(NamedTuple):
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
     form_data: bool = False
+    save_log: bool = True
     # verbose: bool = True
 
 
@@ -65,6 +66,12 @@ def get_args() -> Args:
         help="Send payload as form encoded data instead of JSON (default: false)",
         action="store_true",
     )
+    parser.add_argument(
+        "-s",
+        "--save-log",
+        help="Save results to a log file in the current working directory (default: false)",
+        action="store_true",
+    )
     # parser.add_argument(
     #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
     # )
@@ -75,7 +82,8 @@ def get_args() -> Args:
         args.url,
         args.concurrency,
         args.method,
-        args.form_data
+        args.form_data,
+        args.save_log
         # args.verbose,
     )
 
