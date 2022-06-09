@@ -65,7 +65,7 @@ def _get_request_identifiers(request: Request) -> str:
     Extract identiying details from the request payload.
     TODO: only pull out `id` and or `name` values if they exist
     """
-    slice_length = 1000
+    slice_length = 500
     content_slice = request.content[:slice_length]
     suffix = "..." if slice_length < int(request.headers["content-length"]) else ""
     return f"{content_slice.decode(UTF8)} {suffix}"
