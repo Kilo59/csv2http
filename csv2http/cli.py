@@ -62,7 +62,7 @@ def get_args() -> Args:
     parser.add_argument(
         "-d",
         "--form-data",
-        help="Send payload as form encoded data (default: false)",
+        help="Send payload as form encoded data instead of JSON (default: false)",
         action="store_true",
     )
     # parser.add_argument(
