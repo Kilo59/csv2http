@@ -115,7 +115,7 @@ def main():
         asyncio.run(execute(user_args))
     except KeyboardInterrupt:
         print("KeyboardInterrupt stopping...")
-    except Exception as exc:
+    except Exception as exc:  # pylint: disable=broad-except
         dump_crash_log(user_args.file, exc)
 
 
