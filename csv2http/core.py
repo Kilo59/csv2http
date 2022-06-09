@@ -111,6 +111,9 @@ async def execute(args: cli.Args) -> int:
             if args.save_log:
                 append_responses(log_file, responses)
 
+    if args.save_log:
+        print(f"log file -> {log_file.absolute()}")
+
     return total_requests
 
 
