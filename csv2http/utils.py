@@ -56,7 +56,11 @@ def summarize_responses(responses: list[Response]) -> str:
         [getattr(r, "status_code", r.__class__.__name__) for r in responses]
     )
     # TODO: maybe don't bother sorting this
-    sorted_dict = dict(sorted(counter.items(), key=lambda item: item[0]))
+    sorted_dict = dict(
+        sorted(
+            counter.items(), key=lambda item: item[0] if isinstance(item[0], int) else 0
+        )
+    )
     return f"status codes - {sorted_dict}"
 
 
