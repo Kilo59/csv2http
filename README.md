@@ -27,9 +27,9 @@ Check CLI usage
 
 ```
 ❯ csv2http --help
-usage: csv2http [-h] [-c CONCURRENCY] [--method {POST,PATCH,PUT}] file url
+usage: csv2http [-h] [-c CONCURRENCY] [--method {POST,PATCH,PUT}] [-d] [-n] file url
 
-HTTP request for every row of a CSV file
+HTTP request for every row of a CSV file - v0.0.2a
 
 positional arguments:
   file                  payload csv file
@@ -41,6 +41,8 @@ options:
                         Maximum number of concurrent requests (default: 25)
   --method {POST,PATCH,PUT}
                         HTTP method/verb (default: POST)
+  -d, --form-data       Send payload as form encoded data instead of JSON (default: false)
+  -n, --no-save         Do not save results to log file (default: false)
 ```
 
 ### Mockbin Example
