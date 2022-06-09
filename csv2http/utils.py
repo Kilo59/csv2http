@@ -4,7 +4,6 @@ utils.py
 Homeless utilities.
 """
 import datetime as dt
-import os
 import pathlib
 import traceback
 from typing import Counter, Union
@@ -19,9 +18,7 @@ UTF8 = "utf-8"
 def _add_timestamp_and_suffix(
     file_path: pathlib.Path, suffix: str = "log"
 ) -> pathlib.Path:
-    timestamp = dt.datetime.now().isoformat(timespec="seconds")
-    if os.name == "nt":
-        timestamp = timestamp.replace(":", "_")
+    timestamp = dt.datetime.now().isoformat(timespec="seconds").replace(":", "_")
     return pathlib.Path(f"{file_path.stem}_{timestamp}.{suffix}")
 
 
