@@ -84,6 +84,9 @@ async def execute(args: cli.Args) -> int:
 
     total_requests = 0
 
+    print(args.form_data)
+    content = "data" if args.form_data else "json"
+
     async with httpx.AsyncClient() as client_session:
 
         print(f" {args.method} {args.url}")
@@ -95,7 +98,7 @@ async def execute(args: cli.Args) -> int:
             responses = await parrelelize_requests(
                 args.method,
                 args.url,
-                [{"json": p} for p in paylod_batch],
+                [{content: p} for p in paylod_batch],
                 client_session,
             )
             total_requests += len(responses)

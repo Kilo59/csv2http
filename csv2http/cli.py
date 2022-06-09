@@ -29,6 +29,7 @@ class Args(NamedTuple):
     url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
+    form_data: bool = False
     # verbose: bool = True
 
 
@@ -56,6 +57,12 @@ def get_args() -> Args:
         default="POST",
         choices=SUPPORTED_METHODS,
     )
+    parser.add_argument(
+        "-d",
+        "--form-data",
+        help="Send payload as form encoded data (default: false)",
+        action="store_true",
+    )
     # parser.add_argument(
     #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
     # )
@@ -66,6 +73,7 @@ def get_args() -> Args:
         args.url,
         args.concurrency,
         args.method,
+        args.form_data
         # args.verbose,
     )
 
