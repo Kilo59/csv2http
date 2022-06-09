@@ -66,9 +66,9 @@ def get_args() -> Args:
         action="store_true",
     )
     parser.add_argument(
-        "-s",
-        "--save-log",
-        help="Save results to a log file in the current working directory (default: false)",
+        "-n",
+        "--no-save",
+        help="Do not save results to log file (default: false)",
         action="store_true",
     )
     # parser.add_argument(
@@ -82,7 +82,7 @@ def get_args() -> Args:
         args.concurrency,
         args.method,
         args.form_data,
-        args.save_log
+        not args.no_save
         # args.verbose,
     )
 
