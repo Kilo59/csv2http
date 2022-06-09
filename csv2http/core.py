@@ -11,7 +11,7 @@ import httpx
 
 from csv2http import cli, parser
 from csv2http.constants import PAGE_SIZE_DEFAULT
-from csv2http.utils import summarize_responses
+from csv2http.utils import dump_crash_log, summarize_responses
 
 LOGGER = logging.getLogger(__file__)
 
@@ -107,7 +107,12 @@ async def execute(args: cli.Args) -> int:
 def main():
     """csv2http script entrypoint."""
     user_args = cli.get_args()
-    asyncio.run(execute(user_args))
+    try:
+        asyncio.run(execute(user_args))
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt stopping...")
+    except Exception as exc:  # pylint: disable=broad-except
+        dump_crash_log(user_args.file.stem, exc)
 
 
 if __name__ == "__main__":
