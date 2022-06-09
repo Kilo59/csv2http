@@ -3,6 +3,8 @@
 [![ci](https://github.com/Kilo59/csv2http/workflows/ci/badge.svg)](https://github.com/Kilo59/csv2http/actions)
 [![pypi version](https://img.shields.io/pypi/v/csv2http.svg)](https://pypi.org/project/csv2http/)
 ![Python Versions](https://img.shields.io/pypi/pyversions/csv2http)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Kilo59_csv2http&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Kilo59_csv2http)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Kilo59_csv2http&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Kilo59_csv2http)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 CLI tool and library for making a series of JSON or form-encoded HTTP requests based on a CSV file input.
