@@ -7,7 +7,7 @@
 
 CLI tool and library for making a series of JSON or form-encoded HTTP requests based on a CSV file input.
 
-[![asciicast](https://asciinema.org/a/gPEvi5RDe6MYVNt7ilBL1kP2Y.svg)](https://asciinema.org/a/gPEvi5RDe6MYVNt7ilBL1kP2Y)
+[![asciicast](https://asciinema.org/a/gPEvi5RDe6MYVNt7ilBL1kP2Y.svg?autoplay=1)](https://asciinema.org/a/gPEvi5RDe6MYVNt7ilBL1kP2Y)
 
 ## Quick start
 
