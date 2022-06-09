@@ -11,7 +11,7 @@ import httpx
 
 from csv2http import cli, parser
 from csv2http.constants import PAGE_SIZE_DEFAULT
-from csv2http.utils import dump_crash_log, summarize_responses
+from csv2http.utils import append_responses, dump_crash_log, summarize_responses
 
 LOGGER = logging.getLogger(__file__)
 
@@ -100,6 +100,7 @@ async def execute(args: cli.Args) -> int:
             )
             total_requests += len(responses)
             print(f"  {summarize_responses(responses)}")
+            append_responses(responses, "results.log")
 
     return total_requests
 

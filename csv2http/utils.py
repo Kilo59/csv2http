@@ -8,9 +8,7 @@ import pathlib
 import traceback
 from typing import Counter, Union
 
-from typing import Counter
-
-from httpx import Response
+from httpx import Request, Response
 
 # pylint: disable=fixme
 
@@ -53,3 +51,21 @@ def summarize_responses(responses: list[Response]) -> str:
     # TODO: maybe don't bother sorting this
     sorted_dict = dict(sorted(counter.items(), key=lambda item: item[0]))
     return f"status codes - {sorted_dict}"
+
+
+def _get_request_identifiers(request: Request) -> str:
+    """
+    Extract identiying details from the request payload
+    TODO: only pull out `id` and or `name` values if they exist
+    """
+    return f"{request.content.decode(UTF8)}"
+
+
+def _extract_log(response: Response) -> str:
+    return f"{response} - {_get_request_identifiers(response.request)}"
+
+
+def append_responses(responses: list[Response], file_like):
+    """Append response results to a file."""
+    with open(file_like, mode="a", encoding=UTF8) as file_out:
+        file_out.writelines([_extract_log(r) + "\n" for r in responses])
