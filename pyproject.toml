@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "csv2http"
-version = "0.0.0a"
+version = "0.0.2a"
 description = "Make http requests based on a CSV input file"
 authors = ["Gabriel Gore <gabriel59kg@gmail.com>"]
 license = "MIT License"
@@ -41,9 +41,11 @@ pytest-icdiff = "^0.5"
 pytest-asyncio = "^0.18.3"
 pytest-sugar = "^0.9.4"
 types-invoke = "^1.6.8"
+pytest-cov = "^3.0.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+addopts = "--cov=csv2http --cov-report term"
 
 [tool.isort]
 known_first_party = "csv2http"

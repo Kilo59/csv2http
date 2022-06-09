@@ -8,17 +8,18 @@ from typing import Literal, NamedTuple, Union
 
 from httpx import URL
 
+from csv2http._version import __version__
+
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 
 CONCURRENCY_DEFAULT = 25
 
 
-def validate_url(value: Union[str, URL]) -> URL:
+def _normalize_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
-        base = URL(f"http://{url.path}")
-        url = base.join(url)
+        url = URL(f"https://{url}")
     return url
 
 
@@ -29,19 +30,21 @@ class Args(NamedTuple):
     url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
+    form_data: bool = False
+    save_log: bool = True
     # verbose: bool = True
 
 
 def get_args() -> Args:
     """Get user args from the command line."""
     parser = argparse.ArgumentParser(
-        description="HTTP request for every row of a CSV file - v0.0.0a"
+        description=f"HTTP request for every row of a CSV file - v{__version__}"
     )
     parser.add_argument("file", help="payload csv file", type=pathlib.Path)
     parser.add_argument(
         "url",
         help="URL destination - called with `http` if scheme is absent",
-        type=validate_url,
+        type=_normalize_url,
     )
     parser.add_argument(
         "-c",
@@ -56,6 +59,18 @@ def get_args() -> Args:
         default="POST",
         choices=SUPPORTED_METHODS,
     )
+    parser.add_argument(
+        "-d",
+        "--form-data",
+        help="Send payload as form encoded data instead of JSON (default: false)",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-n",
+        "--no-save",
+        help="Do not save results to log file (default: false)",
+        action="store_true",
+    )
     # parser.add_argument(
     #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
     # )
@@ -66,6 +81,8 @@ def get_args() -> Args:
         args.url,
         args.concurrency,
         args.method,
+        args.form_data,
+        not args.no_save
         # args.verbose,
     )
 

@@ -5,12 +5,18 @@ core.py
 import asyncio
 import logging
 import pathlib
-from typing import Counter, Generator, Iterable, Literal, Union
+from typing import Generator, Iterable, Literal, Union
 
 import httpx
 
 from csv2http import cli, parser
 from csv2http.constants import PAGE_SIZE_DEFAULT
+from csv2http.utils import (
+    _add_timestamp_and_suffix,
+    append_responses,
+    dump_crash_log,
+    summarize_responses,
+)
 
 LOGGER = logging.getLogger(__file__)
 
@@ -33,27 +39,6 @@ def chunker(
         yield chunk
 
 
-def response_details(response: httpx.Response, verbose: bool = False) -> str:
-    """Returns a string details of the response and the original request."""
-    # TODO: prettyprint json
-    result = f"{response.request.method} {response.request.url} -> {response}"
-    if verbose:
-        result += (
-            f"\n  headers - {dict(response.headers)}"
-            + f"\n  content - {response.content.decode()}"
-        )
-    return result
-
-
-def summarize_responses(responses: list[httpx.Response]) -> str:
-    """Returns count of all response status codes sorted by status code"""
-    # TODO: make this pretty, display as table with running tally of previous responses
-    counter = Counter([r.status_code for r in responses])
-    # TODO: maybe don't bother sorting this
-    sorted_dict = dict(sorted(counter.items(), key=lambda item: item[0]))
-    return f"status codes - {sorted_dict}"
-
-
 # supported http methods
 Methods = Literal["POST", "PUT", "PATCH"]
 
@@ -61,10 +46,30 @@ Methods = Literal["POST", "PUT", "PATCH"]
 async def parrelelize_requests(
     method: Methods,
     path: Union[str, httpx.URL],
+    # TODO: create type for request_kwargs
     request_kwarg_list: list[dict],
     client_session: httpx.AsyncClient,
 ) -> list[httpx.Response]:
-    """Parreleize multiple HTTP requests with asyncio.gather."""
+    """
+    Parreleize multiple HTTP requests with asyncio.gather.
+
+    Parameters
+    ----------
+    method
+        HTTP verb to use POST, PUT, PATCH.
+    path
+        Absolute or relative URL path.
+    request_kwarg_list
+        List of keyword arguments to pass to `httpx.request()`. Each object becomes an
+        independent request and async task.
+    client_session
+        Active AsyncClient instance session.
+
+    Returns
+    -------
+    list[httpx.Response]
+        List of HTTP response objects.
+    """
 
     tasks = [
         client_session.request(method, path, **request_kwargs)
@@ -84,6 +89,9 @@ async def execute(args: cli.Args) -> int:
 
     total_requests = 0
 
+    content = "data" if args.form_data else "json"
+    log_file = _add_timestamp_and_suffix(file_input, "log")
+
     async with httpx.AsyncClient() as client_session:
 
         print(f" {args.method} {args.url}")
@@ -95,11 +103,16 @@ async def execute(args: cli.Args) -> int:
             responses = await parrelelize_requests(
                 args.method,
                 args.url,
-                [{"json": p} for p in paylod_batch],
+                [{content: p} for p in paylod_batch],
                 client_session,
             )
             total_requests += len(responses)
             print(f"  {summarize_responses(responses)}")
+            if args.save_log:
+                append_responses(log_file, responses)
+
+    if args.save_log:
+        print(f"log file -> {log_file.absolute()}")
 
     return total_requests
 
@@ -107,7 +120,16 @@ async def execute(args: cli.Args) -> int:
 def main():
     """csv2http script entrypoint."""
     user_args = cli.get_args()
-    asyncio.run(execute(user_args))
+    try:
+        asyncio.run(execute(user_args))
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt stopping...")
+    except Exception as exc:  # pylint: disable=broad-except
+        crash_log_path = _add_timestamp_and_suffix(user_args.file, "crash.log")
+        print(
+            exc.__class__.__name__
+            + f" check crash log - {dump_crash_log(crash_log_path, exc)}",
+        )
 
 
 if __name__ == "__main__":
