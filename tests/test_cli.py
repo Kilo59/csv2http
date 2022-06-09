@@ -8,8 +8,8 @@ from csv2http import cli
     "url,expected",
     [
         ("https://example.com", "https://example.com"),
-        ("example.com", "http://example.com"),
-        ("example.com/foo/bar", "http://example.com/foo/bar"),
+        ("example.com", "https://example.com"),
+        ("example.com/foo/bar", "https://example.com/foo/bar"),
     ],
 )
 def test_normalize_ulr(url, expected):
