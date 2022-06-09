@@ -13,3 +13,4 @@ pip-wheel-metadata/
 site/
 .venv/
 .poetry_cache/
+.DS_Store
