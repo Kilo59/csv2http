@@ -18,8 +18,7 @@ from .constants import TEST_CSVS
 @pytest.fixture(scope="module", params=TEST_CSVS)
 def csv_payload_generator_param_fxt(request):
     """Parametrized fixture of csv_payload_generators, one per CSV in tests/data."""
-    payload_gen = parser.csv_payload_generator(request.param)
-    yield payload_gen
+    yield parser.csv_payload_generator(request.param)
 
 
 @pytest.fixture(scope="module")
