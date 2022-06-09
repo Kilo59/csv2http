@@ -19,8 +19,7 @@ def _normalize_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
     if not url.scheme:
-        base = URL(f"http://{url.path}")
-        url = base.join(url)
+        url = URL(f"http://{url}")
     return url
 
 
