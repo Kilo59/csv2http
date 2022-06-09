@@ -1,3 +1,5 @@
+import pathlib
+
 import httpx
 import pytest
 
@@ -50,7 +52,9 @@ async def test_parrelelize_requests(http_reflect, csv_payload_generator_param_fx
 
 
 @pytest.mark.asyncio
-async def test_main(http_reflect_random_status, sample_csv):
+async def test_main(
+    http_reflect_random_status, tmp_log_files: pathlib.Path, sample_csv: pathlib.Path
+):
 
     total = await core.execute(
         cli.Args(
@@ -63,6 +67,9 @@ async def test_main(http_reflect_random_status, sample_csv):
     )
 
     assert http_reflect_random_status.calls.call_count == total
+
+    log_files = list(tmp_log_files.iterdir())
+    assert log_files, "No result log file found"
 
 
 if __name__ == "__main__":

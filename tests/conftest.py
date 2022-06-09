@@ -8,7 +8,7 @@ import httpx
 import pytest
 import respx
 
-from csv2http import parser
+from csv2http import core, parser, utils
 
 from .constants import TEST_CSVS
 
@@ -64,3 +64,25 @@ def http_reflect_random_status():
         )
 
         yield respx_mock
+
+
+@pytest.fixture
+def tmp_log_files(tmpdir, monkeypatch):
+    """
+    Creates a temporary directory and patches `core._add_timestamp_and_suffix()`
+    to always return a path within that directory.
+    """
+    tmpdir_path = pathlib.Path(tmpdir)
+
+    def _add_ts_and_suffix_tmpdir(filepath, suffix="log") -> pathlib.Path:
+        # pylint: disable=protected-access
+        return tmpdir_path / utils._add_timestamp_and_suffix(filepath, suffix)
+
+    monkeypatch.setattr(
+        core,
+        "_add_timestamp_and_suffix",
+        _add_ts_and_suffix_tmpdir,
+        raising=True,
+    )
+
+    yield tmpdir_path
