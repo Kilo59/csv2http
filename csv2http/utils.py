@@ -14,10 +14,6 @@ from httpx import Request, Response
 
 UTF8 = "utf-8"
 
-# TODO: refactor `_add_timestamp_and_suffix` and its use.
-# bad coupling and seperation of concerns here
-# `dump_crash_log` & `append_responses` shouldn't need to know anything about a CSV file
-
 
 def _add_timestamp_and_suffix(
     file_path: pathlib.Path, suffix: str = "log"
@@ -33,13 +29,12 @@ def format_traceback(ex: Union[Exception, BaseException]) -> str:
 
 
 def dump_crash_log(
-    csv_source_file_name: pathlib.Path, exc: Union[Exception, BaseException]
+    crash_log_path: pathlib.Path, exc: Union[Exception, BaseException]
 ) -> pathlib.Path:
-    """Write a crash log with a timestamp to a `.crash.log` file."""
-    crash_log = _add_timestamp_and_suffix(csv_source_file_name, "crash.log")
-    with open(crash_log, mode="w", encoding=UTF8) as file_out:
+    """Write a crash log to a file."""
+    with open(crash_log_path, mode="w", encoding=UTF8) as file_out:
         file_out.write(format_traceback(exc))
-    return crash_log
+    return crash_log_path
 
 
 def response_details(response: Response, verbose: bool = False) -> str:
@@ -76,14 +71,13 @@ def _extract_log(response: Response) -> str:
 
 
 def append_responses(
-    csv_source_file_name: pathlib.Path,
+    log_path: pathlib.Path,
     responses: list[Response],
 ) -> pathlib.Path:
     """
     Append response results to a file.
     TODO: write to a logger and define a file handler logger
     """
-    log_path = _add_timestamp_and_suffix(csv_source_file_name, "log")
     with open(log_path, mode="a", encoding=UTF8) as file_out:
         file_out.writelines([_extract_log(r) + "\n" for r in responses])
     return log_path

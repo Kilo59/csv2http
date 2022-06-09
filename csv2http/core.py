@@ -11,7 +11,12 @@ import httpx
 
 from csv2http import cli, parser
 from csv2http.constants import PAGE_SIZE_DEFAULT
-from csv2http.utils import append_responses, dump_crash_log, summarize_responses
+from csv2http.utils import (
+    _add_timestamp_and_suffix,
+    append_responses,
+    dump_crash_log,
+    summarize_responses,
+)
 
 LOGGER = logging.getLogger(__file__)
 
@@ -86,6 +91,7 @@ async def execute(args: cli.Args) -> int:
 
     print(args.form_data)
     content = "data" if args.form_data else "json"
+    log_file = _add_timestamp_and_suffix(file_input, "log")
 
     async with httpx.AsyncClient() as client_session:
 
@@ -103,7 +109,7 @@ async def execute(args: cli.Args) -> int:
             )
             total_requests += len(responses)
             print(f"  {summarize_responses(responses)}")
-            append_responses(args.file, responses)
+            append_responses(log_file, responses)
 
     return total_requests
 
@@ -116,7 +122,8 @@ def main():
     except KeyboardInterrupt:
         print("KeyboardInterrupt stopping...")
     except Exception as exc:  # pylint: disable=broad-except
-        dump_crash_log(user_args.file, exc)
+        crash_log_path = _add_timestamp_and_suffix(user_args.file, "crash.log")
+        dump_crash_log(crash_log_path, exc)
 
 
 if __name__ == "__main__":
