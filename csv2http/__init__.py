@@ -3,6 +3,6 @@ csv2http
 """
 import logging
 
-logging.basicConfig(level=logging.INFO)
+from ._version import __version__
 
-__version__ = "0.0.1a"
+logging.basicConfig(level=logging.INFO)

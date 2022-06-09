@@ -8,6 +8,8 @@ from typing import Literal, NamedTuple, Union
 
 from httpx import URL
 
+from csv2http._version import __version__
+
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 
 CONCURRENCY_DEFAULT = 25
@@ -36,7 +38,7 @@ class Args(NamedTuple):
 def get_args() -> Args:
     """Get user args from the command line."""
     parser = argparse.ArgumentParser(
-        description="HTTP request for every row of a CSV file - v0.0.1a"
+        description=f"HTTP request for every row of a CSV file - v{__version__}"
     )
     parser.add_argument("file", help="payload csv file", type=pathlib.Path)
     parser.add_argument(
