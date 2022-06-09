@@ -5,7 +5,7 @@
 ![Python Versions](https://img.shields.io/pypi/pyversions/csv2http)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-CLI tool and library for making a series of HTTP requests based on a CSV file input.
+CLI tool and library for making a series of JSON or form-encoded HTTP requests based on a CSV file input.
 
 ## Quick start
 
@@ -13,6 +13,12 @@ Install
 
 ```
 pip install csv2http
+```
+
+Or with [pipx](https://pypa.github.io/pipx/) (recommended)
+
+```
+pipx install csv2http
 ```
 
 Check CLI usage
@@ -75,8 +81,9 @@ https://mockbin.org/bin/9e95289e-d048-4515-9a61-07f2c74810f5/log
   - [ ] mkdoc docs - Beta
 - [ ] As CLI - Beta
   - [x] argparse - Alpha
+  - [x] write results to logfile - Beta
   - [ ] progress bar - ???
-  - [ ] use dedicated CLI library (typer, rich etc.) - Beta
+  - [ ] use dedicated CLI library with pretty colors (typer, rich etc.) - Beta
   - [ ] Nested fields - V1
 - [ ] Complete Docs - V1
   - [ ] `create_mockbin.csv` and `example.csv` to use in quickstart - Beta
