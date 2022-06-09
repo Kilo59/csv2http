@@ -72,7 +72,7 @@ def _get_request_identifiers(request: Request) -> str:
 
 
 def _extract_log(response: Response) -> str:
-    return f"{response} - {_get_request_identifiers(response.request)}"
+    return f"{response} {_get_request_identifiers(response.request)}"
 
 
 def append_responses(
