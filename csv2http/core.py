@@ -89,7 +89,6 @@ async def execute(args: cli.Args) -> int:
 
     total_requests = 0
 
-    print(args.form_data)
     content = "data" if args.form_data else "json"
     log_file = _add_timestamp_and_suffix(file_input, "log")
 
