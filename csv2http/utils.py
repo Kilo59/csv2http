@@ -60,10 +60,13 @@ def summarize_responses(responses: list[Response]) -> str:
 
 def _get_request_identifiers(request: Request) -> str:
     """
-    Extract identiying details from the request payload
+    Extract identiying details from the request payload.
     TODO: only pull out `id` and or `name` values if they exist
     """
-    return f"{request.content.decode(UTF8)}"
+    slice_length = 1000
+    content_slice = request.content[:slice_length]
+    suffix = "..." if slice_length < int(request.headers["content-length"]) else ""
+    return f"{content_slice.decode(UTF8)} {suffix}"
 
 
 def _extract_log(response: Response) -> str:
