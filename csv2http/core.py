@@ -123,7 +123,10 @@ def main():
         print("KeyboardInterrupt stopping...")
     except Exception as exc:  # pylint: disable=broad-except
         crash_log_path = _add_timestamp_and_suffix(user_args.file, "crash.log")
-        dump_crash_log(crash_log_path, exc)
+        print(
+            exc.__class__.__name__
+            + f" check crash log - {dump_crash_log(crash_log_path, exc)}",
+        )
 
 
 if __name__ == "__main__":
