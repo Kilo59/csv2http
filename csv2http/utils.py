@@ -14,6 +14,17 @@ from httpx import Request, Response
 
 UTF8 = "utf-8"
 
+# TODO: refactor `_add_timestamp_and_suffix` and its use.
+# bad coupling and seperation of concerns here
+# `dump_crash_log` & `append_responses` shouldn't need to know anything about a CSV file
+
+
+def _add_timestamp_and_suffix(
+    file_path: pathlib.Path, suffix: str = "log"
+) -> pathlib.Path:
+    timestamp = dt.datetime.now().isoformat(timespec="seconds")
+    return pathlib.Path(f"{file_path.stem}_{timestamp}.{suffix}")
+
 
 def format_traceback(ex: Union[Exception, BaseException]) -> str:
     """Generate a full exception traceback string from an exception."""
@@ -22,14 +33,13 @@ def format_traceback(ex: Union[Exception, BaseException]) -> str:
 
 
 def dump_crash_log(
-    file_stem: str, exc: Union[Exception, BaseException]
+    csv_source_file_name: pathlib.Path, exc: Union[Exception, BaseException]
 ) -> pathlib.Path:
     """Write a crash log with a timestamp to a `.crash.log` file."""
-    timestamp = dt.datetime.now().isoformat(timespec="seconds")
-    file_path = pathlib.Path(f"{file_stem}_{timestamp}.crash.log")
-    with open(file_path, mode="w+", encoding=UTF8) as file_out:
+    crash_log = _add_timestamp_and_suffix(csv_source_file_name, "crash.log")
+    with open(crash_log, mode="w", encoding=UTF8) as file_out:
         file_out.write(format_traceback(exc))
-    return file_path
+    return crash_log
 
 
 def response_details(response: Response, verbose: bool = False) -> str:
@@ -65,7 +75,15 @@ def _extract_log(response: Response) -> str:
     return f"{response} - {_get_request_identifiers(response.request)}"
 
 
-def append_responses(responses: list[Response], file_like):
-    """Append response results to a file."""
-    with open(file_like, mode="a", encoding=UTF8) as file_out:
+def append_responses(
+    csv_source_file_name: pathlib.Path,
+    responses: list[Response],
+) -> pathlib.Path:
+    """
+    Append response results to a file.
+    TODO: write to a logger and define a file handler logger
+    """
+    log_path = _add_timestamp_and_suffix(csv_source_file_name, "log")
+    with open(log_path, mode="a", encoding=UTF8) as file_out:
         file_out.writelines([_extract_log(r) + "\n" for r in responses])
+    return log_path

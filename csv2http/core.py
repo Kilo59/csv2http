@@ -100,7 +100,7 @@ async def execute(args: cli.Args) -> int:
             )
             total_requests += len(responses)
             print(f"  {summarize_responses(responses)}")
-            append_responses(responses, "results.log")
+            append_responses(args.file, responses)
 
     return total_requests
 
@@ -112,8 +112,8 @@ def main():
         asyncio.run(execute(user_args))
     except KeyboardInterrupt:
         print("KeyboardInterrupt stopping...")
-    except Exception as exc:  # pylint: disable=broad-except
-        dump_crash_log(user_args.file.stem, exc)
+    except Exception as exc:
+        dump_crash_log(user_args.file, exc)
 
 
 if __name__ == "__main__":
