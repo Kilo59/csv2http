@@ -12,8 +12,9 @@ from httpx import URL, Headers
 from csv2http._version import __version__
 
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
-
 CONCURRENCY_DEFAULT = 25
+
+_SPLIT_REGEX = r"[:=]"
 
 
 def _get_input(prompt: str):
@@ -29,18 +30,22 @@ def _normalize_url(value: Union[str, URL]) -> URL:
 
 
 def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
-    """Parse username & password. Prompt for password if not provided."""
-    username, *extras = value.split(" ", maxsplit=1)
+    """
+    Parse username & password. Prompt for password if not provided.
+    Only splits on `:` to avoid issues with Base64 encoded strings.
+    """
+    # username, *extras = re.split(_SPLIT_REGEX, value, maxsplit=1)
+    username, *extras = value.split(":", maxsplit=1)
     if extras:
         password = " ".join(extras)
     else:
-        password = _get_input("password")
+        password = _get_input("password:")
     return username, password
 
 
 def _parse_header(value: str) -> tuple[str, str]:
-    """Splits string on : = or whitespace and returns a dictionary"""
-    key, value = re.split(r"[:= ]", value, maxsplit=1)
+    """Splits string on `:` or `=` and returns a tuple of key, value."""
+    key, value = re.split(_SPLIT_REGEX, value, maxsplit=1)
     return key, value
 
 

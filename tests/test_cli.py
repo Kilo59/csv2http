@@ -1,3 +1,4 @@
+import base64
 import pathlib
 
 import pytest
@@ -21,10 +22,16 @@ def test_normalize_ulr(url, expected):
 @pytest.mark.parametrize(
     "auth_input,expected",
     [
-        ("foo bar", ("foo", "bar")),
-        # this probably invalid auth but not responsiblity of _resolve_auth
-        ("foo bar bazz", ("foo", "bar bazz")),
+        ("foo:bar", ("foo", "bar")),
+        # ("foo=bar", ("foo", "bar")),
         ("fizz", ("fizz", "fake_input")),
+        ("nopassword:", ("nopassword", "")),
+        # ("nopassword=", ("nopassword", "")),
+        # ensure base64 `=` padding is not stripped from user string
+        (
+            f"{base64.standard_b64encode(b'b64-nopassword').decode('utf-8')}:",
+            (base64.standard_b64encode(b"b64-nopassword").decode("utf-8"), ""),
+        ),
         # also not valid
         ("", ("", "fake_input")),
     ],
@@ -40,17 +47,16 @@ def test_resolve_auth(monkeypatch, auth_input, expected):
     [
         "foo:bar",
         "foo=bar",
-        "foo bar",
     ],
 )
 def test_pase_header(headers_input):
-
     assert ("foo", "bar") == cli._parse_header(headers_input)
 
 
 @pytest.mark.parametrize(
     "args,expected",
     [
+        # minimal example
         (
             ["myfile.csv", "example.com"],
             {
@@ -63,7 +69,30 @@ def test_pase_header(headers_input):
                 "no_save": False,
                 "url": URL("https://example.com"),
             },
-        )
+        ),
+        (
+            [
+                "myfile.csv",
+                "example.com",
+                "-H",
+                "x-foo:bar",
+                "fizz=buzz",
+                "-c",
+                "23",
+                "--auth",
+                "bigetti:password",
+            ],
+            {
+                "auth": ("bigetti", "password"),
+                "concurrency": 23,
+                "file": pathlib.Path("myfile.csv"),
+                "form_data": False,
+                "header": [("x-foo", "bar"), ("fizz", "buzz")],
+                "method": "POST",
+                "no_save": False,
+                "url": URL("https://example.com"),
+            },
+        ),
     ],
 )
 def test_get_args(args, expected):
