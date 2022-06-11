@@ -49,7 +49,7 @@ options:
   -d, --form-data       Send payload as form encoded data instead of JSON (default: false)
   -n, --no-save         Do not save results to log file (default: false)
   -t TIMEOUT, --timeout TIMEOUT
-                        Connection timeout of the request in seconds (default: 10)
+                        Connection timeout of the request in seconds (default: 5)
 ```
 
 ### Mockbin Example

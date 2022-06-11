@@ -13,7 +13,7 @@ from csv2http._version import __version__
 
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
-TIMEOUT_DEFAULT = 10
+TIMEOUT_DEFAULT = 5
 
 _SPLIT_REGEX = r"[:=]"
 
