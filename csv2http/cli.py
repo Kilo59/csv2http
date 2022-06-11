@@ -32,10 +32,8 @@ def _normalize_url(value: Union[str, URL]) -> URL:
 def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     """
     Parse username & password. Prompt for password if not provided.
-    Only splits on `:` to avoid issues with Base64 encoded strings.
     """
-    # username, *extras = re.split(_SPLIT_REGEX, value, maxsplit=1)
-    username, *extras = value.split(":", maxsplit=1)
+    username, *extras = re.split(_SPLIT_REGEX, value, maxsplit=1)
     if extras:
         password = " ".join(extras)
     else:

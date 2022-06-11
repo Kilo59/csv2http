@@ -23,15 +23,10 @@ def test_normalize_ulr(url, expected):
     "auth_input,expected",
     [
         ("foo:bar", ("foo", "bar")),
-        # ("foo=bar", ("foo", "bar")),
+        ("foo=bar", ("foo", "bar")),
         ("fizz", ("fizz", "fake_input")),
         ("nopassword:", ("nopassword", "")),
-        # ("nopassword=", ("nopassword", "")),
-        # ensure base64 `=` padding is not stripped from user string
-        (
-            f"{base64.standard_b64encode(b'b64-nopassword').decode('utf-8')}:",
-            (base64.standard_b64encode(b"b64-nopassword").decode("utf-8"), ""),
-        ),
+        ("nopassword=", ("nopassword", "")),
         # also not valid
         ("", ("", "fake_input")),
     ],
@@ -43,14 +38,19 @@ def test_resolve_auth(monkeypatch, auth_input, expected):
 
 
 @pytest.mark.parametrize(
-    "headers_input",
+    "headers_input,expected",
     [
-        "foo:bar",
-        "foo=bar",
+        ("foo:bar", ("foo", "bar")),
+        ("foo=bar", ("foo", "bar")),
+        (
+            # ensure base64 padding is not removed
+            f"foo={base64.standard_b64encode(b'bar64').decode('utf-8')}",
+            ("foo", base64.standard_b64encode(b"bar64").decode("utf-8")),
+        ),
     ],
 )
-def test_pase_header(headers_input):
-    assert ("foo", "bar") == cli._parse_header(headers_input)
+def test_pase_header(headers_input, expected):
+    assert expected == cli._parse_header(headers_input)
 
 
 @pytest.mark.parametrize(
