@@ -29,9 +29,9 @@ Check CLI usage
 
 ```
 ❯ csv2http --help
-usage: csv2http [-h] [-c CONCURRENCY] [--method {POST,PATCH,PUT}] [-d] [-n] file url
+usage: csv2http [-h] [-c CONCURRENCY] [--method {POST,PATCH,PUT}] [-a AUTH] [-H [HEADER ...]] [-d] [-n] [-t TIMEOUT] file url
 
-HTTP request for every row of a CSV file - v0.0.2a
+HTTP request for every row of a CSV file - v0.0.3a
 
 positional arguments:
   file                  payload csv file
@@ -43,8 +43,13 @@ options:
                         Maximum number of concurrent requests (default: 25)
   --method {POST,PATCH,PUT}
                         HTTP method/verb (default: POST)
+  -a AUTH, --auth AUTH  Basic Authentication enter <USERNAME>:<PASSWORD>. If password is blank you will be prompted for input
+  -H [HEADER ...], --header [HEADER ...]
+                        Header `key:value` pairs
   -d, --form-data       Send payload as form encoded data instead of JSON (default: false)
   -n, --no-save         Do not save results to log file (default: false)
+  -t TIMEOUT, --timeout TIMEOUT
+                        Connection timeout of the request in seconds (default: 10)
 ```
 
 ### Mockbin Example
@@ -74,6 +79,28 @@ Use the returned bin id from before.
 
 Check the bin log from.
 https://mockbin.org/bin/9e95289e-d048-4515-9a61-07f2c74810f5/log
+
+### Set Auth and Headers
+
+Header key, value pairs can be set with the `-H` or `-header` flag.
+
+Key value pairs should be separated with either a `:` or `=`.
+
+```
+csv2http my_file.csv httpbin.org/post -H user-agent:csv2http-cli x-custom-header=foobar
+```
+
+To provide basic auth pass a username and password with `-a` or `--auth`.
+
+If the password is omitted you will be prompted to provide it.
+
+```
+--auth my_username:my_password
+```
+
+```
+--auth my_username
+```
 
 ## Roadmap
 
