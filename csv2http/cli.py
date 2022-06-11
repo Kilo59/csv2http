@@ -13,6 +13,7 @@ from csv2http._version import __version__
 
 SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
+TIMEOUT_DEFAULT = 10
 
 _SPLIT_REGEX = r"[:=]"
 
@@ -73,11 +74,13 @@ def _bootstrap_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-a",
         "--auth",
-        help="Basic Authentication enter <USERNAME> <PASSWORD>."
-        "If password is blank you will be prompted for input",
+        help="Basic Authentication enter <USERNAME>:<PASSWORD>."
+        " If password is blank you will be prompted for input",
         type=_resolve_auth,
     )
-    parser.add_argument("-H", "--header", nargs="*", type=_parse_header)
+    parser.add_argument(
+        "-H", "--header", help="Header `key:value` pairs", nargs="*", type=_parse_header
+    )
     parser.add_argument(
         "-d",
         "--form-data",
@@ -90,8 +93,18 @@ def _bootstrap_parser() -> argparse.ArgumentParser:
         help="Do not save results to log file (default: false)",
         action="store_true",
     )
+    parser.add_argument(
+        "-t",
+        "--timeout",
+        help=f"Connection timeout of each request in seconds (default: {TIMEOUT_DEFAULT})",
+        default=TIMEOUT_DEFAULT,
+        type=int,
+    )
     # parser.add_argument(
-    #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
+    #     "-v",
+    #     "--verbose",
+    #     help="verbose stdout logging",
+    #     action="store_true",
     # )
     return parser
 
@@ -107,7 +120,8 @@ class Args(NamedTuple):
     headers: Optional[Headers] = None
     form_data: bool = False
     save_log: bool = True
-    # verbose: bool = True
+    timeout: int = TIMEOUT_DEFAULT
+    # verbose: bool = False
 
 
 _PARSER = _bootstrap_parser()
@@ -124,7 +138,8 @@ def get_args() -> Args:
         args.auth,
         Headers(args.header),
         args.form_data,
-        not args.no_save
+        not args.no_save,
+        args.timeout,
         # args.verbose,
     )
 

@@ -43,6 +43,10 @@ def test_resolve_auth(monkeypatch, auth_input, expected):
         ("foo:bar", ("foo", "bar")),
         ("foo=bar", ("foo", "bar")),
         (
+            "Authorization=Bearer MY.JWT.TOKEN",
+            ("Authorization", "Bearer MY.JWT.TOKEN"),
+        ),
+        (
             # ensure base64 padding is not removed
             f"foo={base64.standard_b64encode(b'bar64').decode('utf-8')}",
             ("foo", base64.standard_b64encode(b"bar64").decode("utf-8")),
@@ -68,6 +72,7 @@ def test_pase_header(headers_input, expected):
                 "method": "POST",
                 "no_save": False,
                 "url": URL("https://example.com"),
+                "timeout": cli.TIMEOUT_DEFAULT,
             },
         ),
         (
@@ -81,16 +86,22 @@ def test_pase_header(headers_input, expected):
                 "23",
                 "--auth",
                 "bigetti:password",
+                "--timeout",
+                "3",
             ],
             {
                 "auth": ("bigetti", "password"),
                 "concurrency": 23,
                 "file": pathlib.Path("myfile.csv"),
                 "form_data": False,
-                "header": [("x-foo", "bar"), ("fizz", "buzz")],
+                "header": [
+                    ("x-foo", "bar"),
+                    ("fizz", "buzz"),
+                ],
                 "method": "POST",
                 "no_save": False,
                 "url": URL("https://example.com"),
+                "timeout": 3,
             },
         ),
     ],
