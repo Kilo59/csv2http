@@ -29,10 +29,12 @@ def _normalize_url(value: Union[str, URL]) -> URL:
 
 def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     """Parse username & password. Prompt for password if not provided."""
-    user_name, password = value.split(" ", maxsplit=1)
-    if user_name and not password:
+    username, *extras = value.split(" ", maxsplit=1)
+    if extras:
+        password = " ".join(extras)
+    else:
         password = _get_input("password")
-    return user_name, password
+    return username, password
 
 
 class Args(NamedTuple):

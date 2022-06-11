@@ -23,6 +23,8 @@ def test_normalize_ulr(url, expected):
         # this probably invalid auth but not responsiblity of _resolve_auth
         ("foo bar bazz", ("foo", "bar bazz")),
         ("fizz", ("fizz", "fake_input")),
+        # also not valid
+        ("", ("", "fake_input")),
     ],
 )
 def test_resolve_auth(monkeypatch, auth_input, expected):
