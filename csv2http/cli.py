@@ -35,10 +35,7 @@ def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     Parse username & password. Prompt for password if not provided.
     """
     username, *extras = re.split(_SPLIT_REGEX, value, maxsplit=1)
-    if extras:
-        password = " ".join(extras)
-    else:
-        password = _get_input("password:")
+    password = " ".join(extras) if extras else _get_input("password:")
     return username, password
 
 
