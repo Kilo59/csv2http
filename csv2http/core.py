@@ -93,7 +93,7 @@ async def execute(args: cli.Args) -> int:
     log_file = _add_timestamp_and_suffix(file_input, "log")
 
     async with httpx.AsyncClient(
-        auth=args.auth, headers=args.headers
+        auth=args.auth, headers=args.headers, timeout=args.timeout
     ) as client_session:
 
         print(f" {args.method} {args.url}")
