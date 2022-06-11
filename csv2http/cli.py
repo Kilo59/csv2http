@@ -4,7 +4,7 @@ cli.py
 """
 import argparse
 import pathlib
-from typing import Literal, NamedTuple, Union
+from typing import Literal, NamedTuple, Optional, Union
 
 from httpx import URL
 
@@ -23,6 +23,14 @@ def _normalize_url(value: Union[str, URL]) -> URL:
     return url
 
 
+def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
+    """Parse username & password. Prompt for password if not provided."""
+    user_name, password = value.split(" ", maxsplit=1)
+    if user_name and not password:
+        password = input("password")
+    return user_name, password
+
+
 class Args(NamedTuple):
     """Expected user Args."""
 
@@ -30,6 +38,7 @@ class Args(NamedTuple):
     url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
+    auth: Optional[tuple[str, str]] = None
     form_data: bool = False
     save_log: bool = True
     # verbose: bool = True
@@ -60,6 +69,13 @@ def get_args() -> Args:
         choices=SUPPORTED_METHODS,
     )
     parser.add_argument(
+        "-a",
+        "--auth",
+        help="Basic Authentication enter <USERNAME> <PASSWORD>."
+        "If password is blank you will be prompted for input",
+        type=_resolve_auth,
+    )
+    parser.add_argument(
         "-d",
         "--form-data",
         help="Send payload as form encoded data instead of JSON (default: false)",
@@ -81,6 +97,7 @@ def get_args() -> Args:
         args.url,
         args.concurrency,
         args.method,
+        args.auth,
         args.form_data,
         not args.no_save
         # args.verbose,
