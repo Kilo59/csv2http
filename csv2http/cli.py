@@ -123,8 +123,8 @@ def get_args() -> Args:
         args.url,
         args.concurrency,
         args.method,
-        args.header,
         args.auth,
+        Headers(args.header),
         args.form_data,
         not args.no_save
         # args.verbose,
