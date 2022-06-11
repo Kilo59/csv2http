@@ -4,9 +4,10 @@ cli.py
 """
 import argparse
 import pathlib
+import re
 from typing import Literal, NamedTuple, Optional, Union
 
-from httpx import URL
+from httpx import URL, Headers
 
 from csv2http._version import __version__
 
@@ -37,21 +38,13 @@ def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     return username, password
 
 
-class Args(NamedTuple):
-    """Expected user Args."""
-
-    file: pathlib.Path
-    url: Union[URL, str]
-    concurrency: int
-    method: Literal["POST", "PATCH", "PUT"]
-    auth: Optional[tuple[str, str]] = None
-    form_data: bool = False
-    save_log: bool = True
-    # verbose: bool = True
+def _parse_header(value: str) -> tuple[str, str]:
+    """Splits string on : = or whitespace and returns a dictionary"""
+    key, value = re.split(r"[:= ]", value, maxsplit=1)
+    return key, value
 
 
-def get_args() -> Args:
-    """Get user args from the command line."""
+def _bootstrap_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=f"HTTP request for every row of a CSV file - v{__version__}"
     )
@@ -81,6 +74,7 @@ def get_args() -> Args:
         "If password is blank you will be prompted for input",
         type=_resolve_auth,
     )
+    parser.add_argument("-H", "--header", nargs="*", type=_parse_header)
     parser.add_argument(
         "-d",
         "--form-data",
@@ -96,13 +90,35 @@ def get_args() -> Args:
     # parser.add_argument(
     #     "-v", "--verbose", help="verbose stdout logging", default=False, type=bool
     # )
+    return parser
 
-    args = parser.parse_args()
+
+class Args(NamedTuple):
+    """Expected user Args."""
+
+    file: pathlib.Path
+    url: Union[URL, str]
+    concurrency: int
+    method: Literal["POST", "PATCH", "PUT"]
+    auth: Optional[tuple[str, str]] = None
+    headers: Optional[Headers] = None
+    form_data: bool = False
+    save_log: bool = True
+    # verbose: bool = True
+
+
+_PARSER = _bootstrap_parser()
+
+
+def get_args() -> Args:
+    """Get user args from the command line."""
+    args = _PARSER.parse_args()
     return Args(
         args.file,
         args.url,
         args.concurrency,
         args.method,
+        args.header,
         args.auth,
         args.form_data,
         not args.no_save
