@@ -15,6 +15,10 @@ SUPPORTED_METHODS = ["POST", "PATCH", "PUT"]
 CONCURRENCY_DEFAULT = 25
 
 
+def _get_input(prompt: str):
+    return input(prompt)
+
+
 def _normalize_url(value: Union[str, URL]) -> URL:
     """Add scheme to url string if it's missing."""
     url = URL(value)
@@ -27,7 +31,7 @@ def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     """Parse username & password. Prompt for password if not provided."""
     user_name, password = value.split(" ", maxsplit=1)
     if user_name and not password:
-        password = input("password")
+        password = _get_input("password")
     return user_name, password
 
 
