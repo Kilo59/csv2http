@@ -5,7 +5,7 @@ core.py
 import asyncio
 import logging
 import pathlib
-from typing import Generator, Iterable, Literal, Union
+from typing import Generator, Iterable, List, Literal, Union
 
 import httpx
 
@@ -25,7 +25,7 @@ LOGGER = logging.getLogger(__file__)
 
 def chunker(
     input_iterator: Iterable[dict], chunk_size: int = PAGE_SIZE_DEFAULT
-) -> Generator[list[dict], None, None]:
+) -> Generator[List[dict], None, None]:
     """Works through an iterator and returns batches based on `chunk_size`."""
     chunk = []
     for data in input_iterator:
@@ -47,9 +47,9 @@ async def parrelelize_requests(
     method: Methods,
     path: Union[str, httpx.URL],
     # TODO: create type for request_kwargs
-    request_kwarg_list: list[dict],
+    request_kwarg_list: List[dict],
     client_session: httpx.AsyncClient,
-) -> list[httpx.Response]:
+) -> List[httpx.Response]:
     """
     Parreleize multiple HTTP requests with asyncio.gather.
 
@@ -67,7 +67,7 @@ async def parrelelize_requests(
 
     Returns
     -------
-    list[httpx.Response]
+    List[httpx.Response]
         List of HTTP response objects.
     """
 

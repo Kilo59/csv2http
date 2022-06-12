@@ -6,7 +6,7 @@ Homeless utilities.
 import datetime as dt
 import pathlib
 import traceback
-from typing import Counter, Union
+from typing import Counter, List, Union
 
 from httpx import Request, Response
 
@@ -49,7 +49,7 @@ def response_details(response: Response, verbose: bool = False) -> str:
     return result
 
 
-def summarize_responses(responses: list[Response]) -> str:
+def summarize_responses(responses: List[Response]) -> str:
     """Returns count of all response status codes sorted by status code"""
     # TODO: make this pretty, display as table with running tally of previous responses
     counter = Counter(
@@ -81,7 +81,7 @@ def _extract_log(response: Response) -> str:
 
 def append_responses(
     log_path: pathlib.Path,
-    responses: list[Response],
+    responses: List[Response],
 ) -> pathlib.Path:
     """
     Append response results to a file.
