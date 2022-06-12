@@ -31,7 +31,7 @@ Check CLI usage
 ❯ csv2http --help
 usage: csv2http [-h] [-c CONCURRENCY] [--method {POST,PATCH,PUT}] [-a AUTH] [-H [HEADER ...]] [-d] [-n] [-t TIMEOUT] file url
 
-HTTP request for every row of a CSV file - v0.0.3a
+HTTP request for every row of a CSV file - v0.0.3a1
 
 positional arguments:
   file                  payload csv file
