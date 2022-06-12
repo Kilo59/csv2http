@@ -87,7 +87,7 @@ async def parrelelize_requests(
     return responses
 
 
-async def execute(args: cli.Args) -> int:
+async def execute(args: cli.Args, **client_kwargs) -> int:
     """Make http requests given a CSV file and user arguments."""
     file_input = pathlib.Path(args.file)
     assert file_input.exists(), f"could not find {file_input.absolute()}"
@@ -98,7 +98,7 @@ async def execute(args: cli.Args) -> int:
     log_file = _add_timestamp_and_suffix(file_input, "log")
 
     async with httpx.AsyncClient(
-        auth=args.auth, headers=args.headers, timeout=args.timeout
+        auth=args.auth, headers=args.headers, timeout=args.timeout, **client_kwargs
     ) as client_session:
 
         print(f" {args.method} {args.url}")
