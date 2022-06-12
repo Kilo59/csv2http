@@ -5,7 +5,12 @@ core.py
 import asyncio
 import logging
 import pathlib
-from typing import Generator, Iterable, List, Literal, Union
+from typing import Generator, Iterable, List, Union
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 import httpx
 

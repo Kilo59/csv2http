@@ -5,7 +5,12 @@ cli.py
 import argparse
 import pathlib
 import re
-from typing import Literal, NamedTuple, Optional, Tuple, Union
+from typing import NamedTuple, Optional, Tuple, Union
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 from httpx import URL, Headers
 
