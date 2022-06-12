@@ -14,11 +14,11 @@ def test_chunker_chunk_size():
     chunker_gen = core.chunker(input_iterator, chunk_size=chunk_size)
 
     first_result = next(chunker_gen)
-    print(f"{first_result=}")
+    print(f"first_result={first_result}")
     assert len(first_result) == chunk_size
 
     last_result = next(chunker_gen)
-    print(f"{last_result=}")
+    print(f"last_result={last_result}")
     assert len(last_result) == len(input_iterator) - chunk_size
 
 

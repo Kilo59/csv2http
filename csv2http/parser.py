@@ -32,10 +32,7 @@ def csv_payload_generator(
     """
 
     with open(filepath, encoding="utf-8") as file_in:
-        for i, row_dict in enumerate(
-            csv.DictReader(file_in, delimiter=delimiter, **reader_kwargs)
-        ):
-            LOGGER.debug(f"{i=} - {row_dict}")
+        for row_dict in csv.DictReader(file_in, delimiter=delimiter, **reader_kwargs):
             if mutator:
                 row_dict = mutator(row_dict)
             yield row_dict

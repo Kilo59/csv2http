@@ -5,7 +5,12 @@ cli.py
 import argparse
 import pathlib
 import re
-from typing import Literal, NamedTuple, Optional, Union
+from typing import NamedTuple, Optional, Tuple, Union
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # type: ignore
 
 from httpx import URL, Headers
 
@@ -30,7 +35,7 @@ def _normalize_url(value: Union[str, URL]) -> URL:
     return url
 
 
-def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
+def _resolve_auth(value: str) -> Union[Tuple[str, str], Tuple[None, None]]:
     """
     Parse username & password. Prompt for password if not provided.
     """
@@ -39,7 +44,7 @@ def _resolve_auth(value: str) -> Union[tuple[str, str], tuple[None, None]]:
     return username, password
 
 
-def _parse_header(value: str) -> tuple[str, str]:
+def _parse_header(value: str) -> Tuple[str, str]:
     """Splits string on `:` or `=` and returns a tuple of key, value."""
     key, value = re.split(_SPLIT_REGEX, value, maxsplit=1)
     return key, value
@@ -113,7 +118,7 @@ class Args(NamedTuple):
     url: Union[URL, str]
     concurrency: int
     method: Literal["POST", "PATCH", "PUT"]
-    auth: Optional[tuple[str, str]] = None
+    auth: Optional[Tuple[str, str]] = None
     headers: Optional[Headers] = None
     form_data: bool = False
     save_log: bool = True
