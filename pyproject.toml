@@ -30,6 +30,7 @@ f2http = "csv2http.core:main"
 [tool.poetry.dependencies]
 python = "^3.7.2"
 httpx = "^0.23.0"
+typing-extensions = { version = "^4.2.0", python = "~3.7"}
 
 [tool.poetry.dev-dependencies]
 respx = "^0.19.2"
