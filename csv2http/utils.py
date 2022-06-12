@@ -69,14 +69,21 @@ def _get_request_identifiers(request: Request) -> str:
     Extract identiying details from the request payload.
     TODO: only pull out `id` and or `name` values if they exist
     """
-    slice_length = 500
+    slice_length = 50
     content_slice = request.content[:slice_length]
     suffix = "..." if slice_length < int(request.headers["content-length"]) else ""
     return f"{content_slice.decode(UTF8)} {suffix}"
 
 
-def _extract_log(response: Response) -> str:
-    return f"{response} {_get_request_identifiers(response.request)}"
+def _create_log_line(response: Response) -> str:
+    try:
+        resp_content = response.content.decode(UTF8).replace("\n", "")
+    except AttributeError:
+        # could be an httpx error instance
+        resp_content = str(response)
+    return " | ".join(
+        [str(response), resp_content, _get_request_identifiers(response.request)]
+    )
 
 
 def append_responses(
@@ -88,5 +95,5 @@ def append_responses(
     TODO: write to a logger and define a file handler logger
     """
     with open(log_path, mode="a", encoding=UTF8) as file_out:
-        file_out.writelines([_extract_log(r) + "\n" for r in responses])
+        file_out.writelines([_create_log_line(r) + "\n" for r in responses])
     return log_path
