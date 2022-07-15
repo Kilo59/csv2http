@@ -1,6 +1,7 @@
 # csv2http
 
 [![ci](https://github.com/Kilo59/csv2http/workflows/ci/badge.svg)](https://github.com/Kilo59/csv2http/actions)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Kilo59/csv2http/main.svg)](https://results.pre-commit.ci/latest/github/Kilo59/csv2http/main)
 [![pypi version](https://img.shields.io/pypi/v/csv2http.svg)](https://pypi.org/project/csv2http/)
 ![Python Versions](https://img.shields.io/pypi/pyversions/csv2http)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Kilo59_csv2http&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Kilo59_csv2http)
