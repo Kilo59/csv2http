@@ -1,6 +1,7 @@
 """
 Global test fixtures
 """
+
 import pathlib
 import random
 
