@@ -59,10 +59,10 @@ Make POST calls to http://mockbin.org from a local csv file.
 
 ---
 
-First setup a new `bin`, using [httpie](https://httpie.io/cli), curl or the [web ui](http://mockbin.com/bin/create) and get a bin id.
+First setup a new `bin`, using [httpie](https://httpie.io/cli), curl or the [web ui](http://mockbin.io) and get a bin id.
 
 ```
-❯ http POST mockbin.com/bin/create status:=201 statusText=Created httpVersion=HTTP/1.1 headers:='[]' cookies:='[]' 'content[mimeType]'=application/json --body
+❯ http POST mockbin.io/bin/create status:=201 statusText=Created httpVersion=HTTP/1.1 headers:='[]' cookies:='[]' 'content[mimeType]'=application/json --body
 "9e95289e-d048-4515-9a61-07f2c74810f5"
 ```
 
@@ -70,8 +70,8 @@ Create your `my_file.csv` and pass it to `csv2http`.
 Use the returned bin id from before.
 
 ```
-❯ csv2http my_file.csv mockbin.org/bin/9e95289e-d048-4515-9a61-07f2c74810f5 --concurrency 3
- POST http://mockbin.org/bin/mockbin.org/bin/9e95289e-d048-4515-9a61-07f2c74810f5
+❯ csv2http my_file.csv mockbin.io/bin/9e95289e-d048-4515-9a61-07f2c74810f5 --concurrency 3
+ POST http://mockbin.io/bin/9e95289e-d048-4515-9a61-07f2c74810f5
   status codes - {200: 3}
   status codes - {200: 3}
   status codes - {200: 3}
