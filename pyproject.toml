@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "csv2http"
-version = "0.0.3a1"
+version = "0.0.3a2"
 description = "Make http requests based on a CSV input file"
 authors = ["Gabriel Gore <gabriel59kg@gmail.com>"]
 license = "MIT License"
