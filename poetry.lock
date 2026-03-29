@@ -450,14 +450,14 @@ files = [
 
 [[package]]
 name = "ruff-sync"
-version = "0.1.3.dev3"
+version = "0.1.3"
 description = "Synchronize Ruff linter configuration across projects"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "ruff_sync-0.1.3.dev3-py3-none-any.whl", hash = "sha256:d91d3e42feb259b17b86f29b3ff0ce5b0caa03f6223847a67850cdbe060d2afe"},
-    {file = "ruff_sync-0.1.3.dev3.tar.gz", hash = "sha256:c05c34bda4fd68700d15af0318dfb3ec2f20c5ab6787e670d8d59c95538df70b"},
+    {file = "ruff_sync-0.1.3-py3-none-any.whl", hash = "sha256:1505fa52514c95fd7f2c42aee75e5f8f5d0c18402dfcfaa2d9f623a4d6ca81ec"},
+    {file = "ruff_sync-0.1.3.tar.gz", hash = "sha256:27846f8a1f7aeb6ff582132f9ea6f899d0c5abe5f90ffee5b62ccc0696fb1ae4"},
 ]
 
 [package.dependencies]
@@ -545,4 +545,4 @@ markers = {main = "python_version == \"3.10\""}
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "e2295b40847d9fc339d41e2f5db7e5d5e53ce208c794020eca2754e963c74a29"
+content-hash = "09fde268592b532dd85f4c7402dacd819239408d5b4be7515b50d8c9862e505b"
