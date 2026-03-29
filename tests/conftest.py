@@ -45,7 +45,6 @@ def http_reflect():
     # TODO: make http_reflect_airgap
     # pylint: disable=not-context-manager
     with respx.mock(assert_all_called=False, assert_all_mocked=True) as respx_mock:
-
         respx_mock.route(method__in=["POST", "PUT", "PATCH"]).mock(
             side_effect=_reflect_request
         )
@@ -58,7 +57,6 @@ def http_reflect_random_status():
     """Randomize status codes. Return all outgoing http request's payload as a response."""
     # pylint: disable=not-context-manager
     with respx.mock(assert_all_called=False, assert_all_mocked=True) as respx_mock:
-
         respx_mock.route(method__in=["POST", "PUT", "PATCH"]).mock(
             side_effect=_reflect_request_random_status
         )
