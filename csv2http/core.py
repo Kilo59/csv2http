@@ -101,13 +101,11 @@ async def execute(args: cli.Args, **client_kwargs) -> int:
     async with httpx.AsyncClient(
         auth=args.auth, headers=args.headers, timeout=args.timeout, **client_kwargs
     ) as client_session:
-
         print(f" {args.method} {args.url}")
 
         for paylod_batch in chunker(
             parser.csv_payload_generator(file_input), chunk_size=args.concurrency
         ):
-
             responses = await parrelelize_requests(
                 args.method,
                 args.url,
