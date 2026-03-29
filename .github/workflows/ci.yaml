@@ -50,6 +50,9 @@ jobs:
     - name: Set up the project
       run: poetry install -vv
 
+    - name: Check Ruff config is in sync
+      run: poetry run ruff-sync check --semantic --output-format github
+
     - name: Check if the code is correctly typed
       run: poetry run invoke type-check
 
@@ -58,10 +61,6 @@ jobs:
 
     - name: Check code formatting
       run: poetry run invoke fmt --check
-
-    - name: Check Ruff config is in sync
-      run: poetry run ruff-sync check --semantic --output-format github
-
 
   tests:
 
